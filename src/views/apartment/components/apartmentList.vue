@@ -45,6 +45,7 @@
 <script>
 import { delApartment, listApartment } from '@/api/apartment'
 import addRoom from '@/views/apartment/components/addRoom.vue'
+import store from '@/store'
 
 export default {
   components: { addRoom },
@@ -53,7 +54,7 @@ export default {
       apartmentList: null,
       addRoomBox: false,
       param: {
-        'landlordId': ''
+        'userId': store.getters.userId
       }
     }
   },

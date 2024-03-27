@@ -1,7 +1,7 @@
-import request1 from '@/utils/request1'
+import request from '@/utils/request1'
 
 export function saveOrUpdateApartment(data) {
-  return request1({
+  return request({
     url: '/apartment/saveOrUpdate',
     method: 'post',
     data
@@ -9,7 +9,7 @@ export function saveOrUpdateApartment(data) {
 }
 
 export function listApartment(query) {
-  return request1({
+  return request({
     url: '/apartment/listApartmentByUserId',
     method: 'get',
     params: query
@@ -17,7 +17,7 @@ export function listApartment(query) {
 }
 
 export function delApartment(id) {
-  return request1({
+  return request({
     url: '/apartment/del',
     method: 'post',
     params: id

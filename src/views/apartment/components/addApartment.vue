@@ -21,6 +21,8 @@
 
 <script>
 import { saveOrUpdateApartment } from '@/api/apartment'
+import store from '@/store'
+import Vue from 'vue'
 
 export default {
   name: 'AddApartment',
@@ -43,6 +45,7 @@ export default {
         }).catch(_ => {})
     },
     submitApartmentForm(formName) {
+      Vue.set(this.apartmentForm, 'userId', store.getters.userId)
       saveOrUpdateApartment(this.apartmentForm).then(response => {
         if (response.code === 200) {
           this.$message({
