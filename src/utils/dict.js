@@ -7,18 +7,6 @@ export const DICT_TYPE = {
   ELEC_PRICE: 'elecPrice'
 }
 
-export function getSignatureDic(dictType) {
-  return store.getters.dictDatas[dictType]
-}
-
-export function getWaterMoneyDic(dictType) {
-  return store.getters.dictDatas[dictType]
-}
-
-export function getInternetMoneyDic(dictType) {
-  return store.getters.dictDatas[dictType]
-}
-
-export function getElecPriceDic(dictType) {
+export function getDictData(dictType) {
   return store.getters.dictDatas[dictType]
 }

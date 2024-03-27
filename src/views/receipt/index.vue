@@ -1,12 +1,19 @@
 <template>
   <div class="tab-container">
     <div class="el-input">
-      房东ID：<el-input style="width: auto" placeholder="请输入内容" v-model="input1"></el-input>
-      房东姓名：<el-input style="width: auto" placeholder="请输入内容" v-model="input2"></el-input>
-      电话：<el-input style="width: auto" placeholder="请输入内容" v-model="input3"></el-input>
-      省：<el-select placeholder="请选择" v-model="select1"></el-select>
-      市：<el-select placeholder="请选择" v-model="select2"></el-select>
-      状态：<el-select style="width: auto" placeholder="请输入内容" v-model="select3"></el-select>
+      公寓：<el-select placeholder="请选择" clearable v-model="queryForm.apartmentId">
+              <el-option
+                v-for="item in apartmentOption"
+                default-first-option="true"
+                :key="item.key"
+                :label="item.value"
+                :value="item.key">
+              </el-option>
+            </el-select>
+      房间号：<el-input style="width: auto" placeholder="请输入内容" v-model="queryForm.roomNum"></el-input>
+      房东ID：<el-input style="width: auto" placeholder="请输入内容" v-model="queryForm.landLordId"></el-input>
+      月份：<el-date-picker v-model="queryForm.month" type="month" placeholder="选择月">
+    </el-date-picker>
     </div>
     <keep-alive>
       <receiptList v-if="receiptList"></receiptList>
@@ -18,20 +25,30 @@
 <script>
 import receiptList from './components/receiptList.vue'
 import createLandLord from './components/createReceipt.vue'
+import { listApartmentByUserId } from '@/api/apartment'
+import store from '@/store'
 
 export default {
   name: 'Receipt',
   components: { createLandLord, receiptList },
   data() {
     return {
+      queryForm: {},
       receiptList: true,
       addbox: false,
-      input1: '',
-      input2: '',
-      input3: '',
-      select1: '',
-      select2: '',
-      select3: ''
+      apartmentOption: this.listApartment()
+    }
+  },
+  methods: {
+    listApartment() {
+      listApartmentByUserId(store.getters.userId).then(response => {
+        this.apartmentOption = response.data
+        this.apartmentOption.forEach(item => {
+          item.key = item.apartmentId
+          item.value = item.apartmentName
+        })
+        this.queryForm.apartmentId = this.apartmentOption[0].key
+      })
     }
   }
 }

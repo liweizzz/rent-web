@@ -8,18 +8,17 @@ export function saveOrUpdateApartment(data) {
   })
 }
 
-export function listApartment(query) {
+export function listApartmentByUserId(userId) {
   return request({
     url: '/apartment/listApartmentByUserId',
     method: 'get',
-    params: query
+    params: userId
   })
 }
 
 export function delApartment(id) {
   return request({
-    url: '/apartment/del',
-    method: 'post',
-    params: id
+    url: '/apartment/del?id=' + id,
+    method: 'delete'
   })
 }

@@ -1,7 +1,5 @@
 import { constantRoutes } from '@/router'
 import Layout from '@/layout/index.vue'
-import { listApartment } from '@/api/apartment'
-import store from '@/store'
 
 const state = {
   routes: [],

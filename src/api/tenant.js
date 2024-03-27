@@ -48,11 +48,10 @@ export function saveTenantRentDetail(data) {
   })
 }
 
-export function listAllUserFromApartment(id) {
+export function listAllUserFromApartment(apartmentId) {
   return request1({
-    url: '/tenant/listAllTenantFromApartment',
-    method: 'get',
-    params: id
+    url: '/tenant/listAllTenantFromApartment?apartmentId=' + apartmentId,
+    method: 'get'
   })
 }
 

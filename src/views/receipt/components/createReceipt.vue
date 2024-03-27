@@ -125,7 +125,7 @@
 import { createReceipt } from '@/api/receipt'
 import { listAllUserFromApartment } from '@/api/tenant'
 import { listRoomFromApartment } from '@/api/room'
-import { DICT_TYPE, getElecPriceDic, getInternetMoneyDic, getSignatureDic, getWaterMoneyDic } from '@/utils/dict'
+import { DICT_TYPE, getDictData } from '@/utils/dict'
 
 export default {
   name: 'AddReceipt',
@@ -135,8 +135,8 @@ export default {
       dialogVisible: true,
       receiptForm: {},
       options: null,
-      userOption: listAllUserFromApartment(),
-      roomOption: listRoomFromApartment,
+      userOption: listAllUserFromApartment(this.$parent.queryForm.apartmentId),
+      roomOption: listRoomFromApartment(),
       pickerOptions: {
         shortcuts: [{
           text: '今天',
@@ -145,10 +145,10 @@ export default {
           }
         }]
       },
-      elecPriceOptions: getElecPriceDic(DICT_TYPE.ELEC_PRICE),
-      signature: getSignatureDic(DICT_TYPE.SIGNATURE),
-      waterMoney: getWaterMoneyDic(DICT_TYPE.WATER_MONEY),
-      internetMoney: getInternetMoneyDic(DICT_TYPE.INTERNET_MONEY)
+      elecPriceOptions: getDictData(DICT_TYPE.ELEC_PRICE),
+      signature: getDictData(DICT_TYPE.SIGNATURE),
+      waterMoney: getDictData(DICT_TYPE.WATER_MONEY),
+      internetMoney: getDictData(DICT_TYPE.INTERNET_MONEY)
     }
   },
   methods: {

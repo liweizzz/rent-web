@@ -2,10 +2,10 @@
   <div>
     <div>
       <el-button type="primary" icon="el-icon-search" @click="searchReceipt">搜索</el-button>
-      <el-button type="primary" icon="el-icon-plus" @click="addReceiptForm">新增收据</el-button>
+      <el-button type="primary" icon="el-icon-plus" @click="addReceiptForm">创建收据</el-button>
     </div>
     <div>
-      <el-table :data="receiptList" border fit highlight-current-row style="width: 100%" >
+      <el-table :data="receiptList" border fit highlight-current-row style="width: 100%">
         <el-table-column align="center" width="60px" label="ID" prop="id">
           <template slot-scope="scope">
             {{ scope.row.id }}
@@ -94,24 +94,27 @@
       </el-table>
       <el-pagination
         :total="total"
+        layout="total, sizes, prev, pager, next, jumper"
+        :page.sync="queryParam.pageNum"
+        :limit.sync="queryParam.pageSize"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        layout="total, sizes, prev, pager, next, jumper"
-        :page.sync="listQuery.pageNum"
-        :limit.sync="listQuery.pageSize"
-        @pagination="getReceiptList"></el-pagination>
+        @pagination="getReceiptList"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { createReceipt, delReceipt, getReceiptList } from '@/api/receipt'
+import store from '@/store'
 
 export default {
   data() {
     return {
       receiptList: null,
-      listQuery: {
+      queryParam: {
+        userId: store.getters.userId,
         pageNum: 1,
         pageSize: 10
       },
@@ -119,7 +122,7 @@ export default {
     }
   },
   created() {
-    this.getReceiptList(this.listQuery)
+    this.getReceiptList(this.queryParam)
   },
   methods: {
     addReceiptForm() {
@@ -136,19 +139,23 @@ export default {
       })
     },
     searchReceipt() {
-      this.getReceiptList(this.listQuery)
+      this.getReceiptList(this.queryParam)
     },
     showLandLordForm() {
       this.$parent.addbox = true
     },
     handleSizeChange(val) {
-      this.listQuery.pageSize = val
+      this.queryParam.pageSize = val
     },
     handleCurrentChange(val) {
-      this.listQuery.pageNum = val
-      this.getReceiptList(this.listQuery)
+      this.queryParam.pageNum = val
+      this.getReceiptList(this.queryParam)
     },
     getReceiptList(val) {
+      const queryForm = this.$parent.queryForm
+      for (const key in queryForm) {
+        this.$set(this.queryParam, key, queryForm[key])
+      }
       getReceiptList(val).then(response => {
         this.receiptList = response.data.records
         this.total = response.data.total
@@ -157,7 +164,7 @@ export default {
     handleDelete({ row }) {
       delReceipt(row.id).then(response => {
         if (response.code === 200) {
-          this.getReceiptList(this.listQuery)
+          this.getReceiptList(this.queryParam)
           alert('删除成功')
         }
       })

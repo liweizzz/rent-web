@@ -6,10 +6,7 @@
     </div>
     <div>
       <el-table :data="apartmentList" border fit highlight-current-row style="width: 100%" >
-        <el-table-column align="center" width="60px" label="ID" prop="id">
-          <template slot-scope="scope">
-            {{ scope.row.id }}
-          </template>
+        <el-table-column type="index" label="序号" align="center" width="50" sortable>
         </el-table-column>
         <el-table-column align="center" label="公寓ID" prop="apartmentId">
           <template slot-scope="scope">
@@ -43,7 +40,7 @@
 </template>
 
 <script>
-import { delApartment, listApartment } from '@/api/apartment'
+import { delApartment, listApartmentByUserId } from '@/api/apartment'
 import addRoom from '@/views/apartment/components/addRoom.vue'
 import store from '@/store'
 
@@ -72,7 +69,7 @@ export default {
       this.getApartmentList()
     },
     getApartmentList() {
-      listApartment(this.param).then(response => {
+      listApartmentByUserId(this.param).then(response => {
         this.apartmentList = response.data
       })
     },
