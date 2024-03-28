@@ -25,7 +25,6 @@
 <script>
 import receiptList from './components/receiptList.vue'
 import createLandLord from './components/createReceipt.vue'
-import { listApartmentByUserId } from '@/api/apartment'
 import store from '@/store'
 
 export default {
@@ -36,20 +35,11 @@ export default {
       queryForm: {},
       receiptList: true,
       addbox: false,
-      apartmentOption: this.listApartment()
+      apartmentOption: store.getters.apartments
     }
   },
-  methods: {
-    listApartment() {
-      listApartmentByUserId(store.getters.userId).then(response => {
-        this.apartmentOption = response.data
-        this.apartmentOption.forEach(item => {
-          item.key = item.apartmentId
-          item.value = item.apartmentName
-        })
-        this.queryForm.apartmentId = this.apartmentOption[0].key
-      })
-    }
+  created() {
+    this.queryForm.apartmentId = this.apartmentOption[0].key
   }
 }
 </script>

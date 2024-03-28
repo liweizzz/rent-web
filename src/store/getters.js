@@ -7,10 +7,11 @@ const getters = {
   cachedViews: state => state.tagsView.cachedViews,
   token: state => state.user.token,
   avatar: state => state.user.avatar,
-  name: state => state.user.name,
+  username: state => state.user.username,
   introduction: state => state.user.introduction,
   roles: state => state.user.roles,
   userId: state => state.user.userId,
+  apartments: state => state.user.apartments,
   permission_routes: state => state.permission.routes,
   errorLogs: state => state.errorLog.logs,
   // 数据字典

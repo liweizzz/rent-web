@@ -6,7 +6,8 @@ const state = {
   token: getToken(),
   name: '',
   userId: '',
-  roles: []
+  roles: [],
+  apartments: []
 }
 
 const mutations = {
@@ -24,6 +25,9 @@ const mutations = {
   },
   SET_PRIVILEGES: (state, privileges) => {
     state.privileges = privileges
+  },
+  SET_APARTMENTS: (state, apartments) => {
+    state.apartments = apartments
   }
 }
 
@@ -53,7 +57,7 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, username, userId, privileges } = data
+        const { roles, username, userId, privileges, apartments } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
@@ -63,6 +67,8 @@ const actions = {
         commit('SET_NAME', username)
         commit('SET_USERID', userId)
         commit('SET_PRIVILEGES', privileges)
+        // 当前登录用户所有的公寓
+        commit('SET_APARTMENTS', wapperApartments(apartments))
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -120,6 +126,17 @@ const actions = {
     // reset visited views and cached views
     dispatch('tagsView/delAllViews', null, { root: true })
   }
+}
+
+function wapperApartments(apartments) {
+  const res = []
+  apartments.forEach(x => {
+    const item = {}
+    item.key = x.apartmentId
+    item.value = x.apartmentName
+    res.push(item)
+  })
+  return res
 }
 
 export default {
