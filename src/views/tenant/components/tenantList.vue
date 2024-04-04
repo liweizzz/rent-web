@@ -11,10 +11,9 @@
             {{ scope.row.id }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="租户ID" prop="userId">
+        <el-table-column align="center" label="租户ID" prop="tenantId">
           <template slot-scope="scope">
             {{ scope.row.tenantId }}
-            <addTenantRentInfo v-if="rentDetailInfo" :tenantId = 'scope.row.tenantId'></addTenantRentInfo>
           </template>
         </el-table-column>
         <el-table-column align="center" label="租户姓名" prop="userName">
@@ -44,7 +43,7 @@
         </el-table-column>
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" icon = "el-icon-plus" size="small" @click="addRentInfo">
+            <el-button type="primary" icon = "el-icon-plus" size="small" @click="addRentInfo(scope.row.apartmentId, scope.row.tenantId)">
               {{ $t('permission.addRentInfo') }}
             </el-button>
             <el-button type="danger" size="small" @click="handleDelete(scope)">
@@ -61,6 +60,7 @@
         :page.sync="listQuery.pageNum"
         :limit.sync="listQuery.pageSize"
       @pagination="getTenantList"></el-pagination>
+      <addTenantRentInfo v-if="rentDetailInfo" :tenantId = 'tenantId' :apartmentId = 'apartmentId'></addTenantRentInfo>
     </div>
   </div>
 </template>
@@ -75,6 +75,8 @@ export default {
     return {
       tenantList: null,
       rentDetailInfo: false,
+      tenantId: null,
+      apartmentId: null,
       listQuery: {
         pageNum: 1,
         pageSize: 10
@@ -124,7 +126,9 @@ export default {
         }
       })
     },
-    addRentInfo() {
+    addRentInfo(apartmentId, tenantId) {
+      this.apartmentId = apartmentId
+      this.tenantId = tenantId
       this.rentDetailInfo = true
     }
   }

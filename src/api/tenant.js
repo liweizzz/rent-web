@@ -42,7 +42,7 @@ export function saveOrUpdateTenant(data) {
 
 export function saveTenantRentDetail(data) {
   return request1({
-    url: '/tenantRentDetail/addOrUpdate',
+    url: '/tenantRentDetail/saveOrUpdate',
     method: 'post',
     data
   })

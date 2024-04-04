@@ -16,6 +16,13 @@ export function getAllAreas() {
   })
 }
 
+export function getAllCityByProvince(id) {
+  return request1({
+    url: '/city/getAllCitysByProvinceId?provinceId=' + id,
+    method: 'get'
+  })
+}
+
 export function saveLandlord(data) {
   return request1({
     url: '/user/saveOrUpdate',

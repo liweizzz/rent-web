@@ -3,7 +3,7 @@
     <el-form :model="landLordForm" label-position="left">
       <el-row>
         <el-col :span="8">
-          <el-form-item label="姓名" prop="landlordName">
+          <el-form-item label="姓名" prop="userName">
             <el-input v-model="landLordForm.userName"></el-input>
           </el-form-item>
         </el-col>
@@ -102,7 +102,6 @@ export default {
             type: 'success'
           })
           this.$parent.addbox = false
-          console.log(this.$parent)
         }
       })
       // this.$refs[formName].validate((valid) => {

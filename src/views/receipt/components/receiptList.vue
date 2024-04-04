@@ -6,10 +6,7 @@
     </div>
     <div>
       <el-table :data="receiptList" border fit highlight-current-row style="width: 100%">
-        <el-table-column align="center" width="60px" label="ID" prop="id">
-          <template slot-scope="scope">
-            {{ scope.row.id }}
-          </template>
+        <el-table-column type="index" label="序号" align="center" width="50px" sortable>
         </el-table-column>
         <el-table-column align="center" label="租户ID" prop="userId">
           <template slot-scope="scope">

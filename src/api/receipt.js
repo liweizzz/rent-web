@@ -23,3 +23,10 @@ export function createReceipt(data) {
     data
   })
 }
+
+export function getLastReceiptByRoom(id) {
+  return request({
+    url: '/receipt/getLastReceiptByRoom?roomNum=' + id,
+    method: 'get'
+  })
+}

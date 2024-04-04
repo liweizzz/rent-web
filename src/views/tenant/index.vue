@@ -1,7 +1,7 @@
 <template>
   <div class="tab-container">
     <div class="el-input">
-      公寓：<el-select placeholder="请选择" clearable v-model="queryForm.apartmentId">
+      公寓：<el-select placeholder="请选择" clearable v-model="queryForm.apartment">
       <el-option
         v-for="item in apartmentOption"
         default-first-option="true"
@@ -18,7 +18,7 @@
     <keep-alive>
       <tenantList v-if="tenantListTab"></tenantList>
     </keep-alive>
-    <addTenant v-if="addbox"></addTenant>
+    <addTenant v-if="addbox" :apartmentId = 'this.queryForm.apartment'></addTenant>
   </div>
 </template>
 
@@ -39,7 +39,7 @@ export default {
     }
   },
   created() {
-    this.queryForm.apartmentId = this.apartmentOption[0].key
+    this.queryForm.apartment = this.apartmentOption[0].key
   }
 }
 </script>

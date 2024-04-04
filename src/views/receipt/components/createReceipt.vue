@@ -3,13 +3,19 @@
     <el-form :model="receiptForm" label-position="left">
       <el-row>
         <el-col :span="8">
-          <el-form-item label="租户姓名" prop="tenantName">
-            <el-input v-model="receiptForm.tenantName"></el-input>
+          <el-form-item label="房间号" prop="roomNum">
+            <el-select placeholder="请选择" @change="roomChange" v-model="receiptForm.roomNum">
+              <el-option
+                v-for="item in roomOption"
+                :key="item.tenantId"
+                :label="item.roomNum"
+                :value="item.roomNum"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="房间号" prop="roomNum">
-            <el-input v-model="receiptForm.roomNum"></el-input>
+          <el-form-item label="租户姓名" prop="tenantName">
+            <el-input v-model="receiptForm.tenantName"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -23,6 +29,8 @@
             </el-date-picker>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="8">
           <el-form-item label="房租到期日期" prop="rentEndDay">
             <el-date-picker
@@ -50,6 +58,8 @@
             </el-select>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="8">
           <el-form-item label="人数" prop="peopleCount">
             <el-input v-model="receiptForm.peopleCount"></el-input>
@@ -65,6 +75,8 @@
             <el-input v-model="receiptForm.curElecNum"></el-input>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="8">
           <el-form-item label="电费单价" prop="elecPrice">
             <el-select placeholder="请选择" v-model="receiptForm.elecPrice">
@@ -92,6 +104,8 @@
             <el-input v-model="receiptForm.deposit"></el-input>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="8">
           <el-form-item label="收款人" prop="signature">
             <el-select placeholder="请选择" v-model="receiptForm.signature">
@@ -103,7 +117,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="24">
+        <el-col :span="16">
           <el-form-item label="备注" prop="note">
             <el-input v-model="receiptForm.note"></el-input>
           </el-form-item>
@@ -122,10 +136,10 @@
 </template>
 
 <script>
-import { createReceipt } from '@/api/receipt'
+import { createReceipt, getLastReceiptByRoom } from '@/api/receipt'
 import { listAllUserFromApartment } from '@/api/tenant'
-import { listRoomFromApartment } from '@/api/room'
 import { DICT_TYPE, getDictData } from '@/utils/dict'
+import { addOneDay, getEndDay } from '@/utils/date'
 
 export default {
   name: 'AddReceipt',
@@ -135,8 +149,7 @@ export default {
       dialogVisible: true,
       receiptForm: {},
       options: null,
-      userOption: listAllUserFromApartment(this.$parent.queryForm.apartmentId),
-      roomOption: listRoomFromApartment(),
+      roomOption: this.listRoomTenant(),
       pickerOptions: {
         shortcuts: [{
           text: '今天',
@@ -163,6 +176,7 @@ export default {
         }).catch(_ => {})
     },
     submitReceiptForm(formName) {
+      console.log(this.receiptForm)
       createReceipt(this.receiptForm).then(response => {
         if (response.code === 200) {
           this.$message({
@@ -178,6 +192,30 @@ export default {
       //     return false
       //   }
       // })
+    },
+    listRoomTenant() {
+      listAllUserFromApartment(this.$parent.queryForm.apartmentId).then(response => {
+        if (response.code === 200) {
+          this.roomOption = response.data
+        }
+      })
+    },
+    async roomChange(value) {
+      this.receiptForm.tenantName = this.roomOption.find((item) => item.roomNum === value).tenantName
+      // 通过房间号获取上次电表度数
+      const response = await getLastReceiptByRoom(value)
+      const receiptInfo = response.data
+      this.$set(this.receiptForm, 'rentMoney', receiptInfo.rentMoney)
+      this.$set(this.receiptForm, 'elecPrice', receiptInfo.elecPrice)
+      this.$set(this.receiptForm, 'lastElecNum', receiptInfo.curElecNum)
+      const rentStartDay = addOneDay(receiptInfo.rentEndDay)
+      this.$set(this.receiptForm, 'rentStartDay', rentStartDay)
+      // 设置 结束日期
+      this.$set(this.receiptForm, 'rentEndDay', getEndDay(rentStartDay))
+      this.$set(this.receiptForm, 'waterMoney', receiptInfo.waterMoney)
+      this.$set(this.receiptForm, 'peopleCount', receiptInfo.peopleCount)
+      this.$set(this.receiptForm, 'internetMoney', receiptInfo.internetMoney)
+      this.$set(this.receiptForm, 'signature', receiptInfo.signature)
     }
   }
 }

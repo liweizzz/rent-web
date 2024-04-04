@@ -6,10 +6,7 @@
     </div>
     <div>
       <el-table :data="landLordlist" border fit highlight-current-row style="width: 100%" >
-        <el-table-column align="center" width="60px" label="ID" prop="id">
-          <template slot-scope="scope">
-            {{ scope.row.id }}
-          </template>
+        <el-table-column type="index" label="序号" align="center" width="50px" sortable>
         </el-table-column>
         <el-table-column align="center" label="房东ID" prop="userId">
           <template slot-scope="scope">
@@ -51,7 +48,7 @@
             {{ scope.row.status }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作">
+        <el-table-column align="center"  width="170" label="操作">
           <template slot-scope="scope">
             <el-button type="primary" size="small" @click="handleEdit(scope)">
               {{ $t('permission.editPermission') }}
@@ -67,8 +64,8 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         layout="total, sizes, prev, pager, next, jumper"
-        :page.sync="listQuery.pageNum"
-        :limit.sync="listQuery.pageSize"
+        :page.sync="queryParam.pageNum"
+        :limit.sync="queryParam.pageSize"
         @pagination="getLandLordList"></el-pagination>
     </div>
   </div>
@@ -81,7 +78,7 @@ export default {
   data() {
     return {
       landLordlist: null,
-      listQuery: {
+      queryParam: {
         pageNum: 1,
         pageSize: 10
       },
@@ -89,23 +86,27 @@ export default {
     }
   },
   created() {
-    this.getLandLordList(this.listQuery)
+    this.getLandLordList(this.queryParam)
   },
   methods: {
     searchLandLord() {
-      this.getLandLordList(this.listQuery)
+      this.getLandLordList(this.queryParam)
     },
     showLandLordForm() {
       this.$parent.addbox = true
     },
     handleSizeChange(val) {
-      this.listQuery.pageSize = val
+      this.queryParam.pageSize = val
     },
     handleCurrentChange(val) {
-      this.listQuery.pageNum = val
-      this.getLandLordList(this.listQuery)
+      this.queryParam.pageNum = val
+      this.getLandLordList(this.queryParam)
     },
     getLandLordList(val) {
+      const queryForm = this.$parent.queryForm
+      for (const key in queryForm) {
+        this.$set(this.queryParam, key, queryForm[key])
+      }
       fetchList(val).then(response => {
         this.landLordlist = response.data.records
         this.landLordlist.forEach(item => {
@@ -119,7 +120,7 @@ export default {
         this.total = response.data.total
       })
     },
-    handleDelete({ $index, row }) {
+    handleDelete({ row }) {
       delLandlord(row.id).then(response => {
         if (response.code === 200) {
           this.getLandLordList(this.listQuery)
