@@ -62,6 +62,7 @@ export default {
     addRentInfo: '租房详情',
     createReceipt: '变更',
     addRoom: '增加房间',
+    listRoom: '房间列表',
     editPermission: '编辑权限',
     roles: '你的权限',
     switchRoles: '切换权限',

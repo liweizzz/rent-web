@@ -1,6 +1,6 @@
 <template>
   <el-dialog :visible.sync="dialogVisible" :before-close="handleClose" :title="dialogType==='edit'?'编辑':'新增'">
-    <el-form :model="rentInfoForm" label-position="left">
+    <el-form :model="rentInfoForm" label-position="top">
       <el-row>
         <el-col :span="8">
           <el-form-item label="起租日期" prop="rentStartDay">
@@ -33,14 +33,16 @@
             </el-select>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="8">
           <el-form-item label="房间号" prop="roomNum">
             <el-select placeholder="请选择" v-model="rentInfoForm.roomNum">
               <el-option
                 v-for="item in roomOption"
-                :key="item.key"
-                :label="item.value"
-                :value="item.value"></el-option>
+                :key="item.id"
+                :label="item.roomNum"
+                :value="item.roomNum"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -63,7 +65,7 @@
 </template>
 
 <script>
-import { saveTenantRentDetail } from '@/api/tenant'
+import { getTenantRentDetailByTId, saveTenantRentDetail } from '@/api/tenant'
 import { listRoomFromApartment } from '@/api/room'
 
 export default {
@@ -83,22 +85,25 @@ export default {
       dialogType: 'new',
       dialogVisible: true,
       rentInfoForm: {},
-      statusOptions: [{ value: '0', label: '在租' }, { value: '1', label: '已退租' }],
+      statusOptions: [{ value: '0', label: '在租' }, { value: '1', label: '退租' }],
       roomOption: this.getAllRoomNum(this.apartmentId)
     }
   },
+  created() {
+    getTenantRentDetailByTId(this.tenantId).then(response => {
+      if (response.code === 200) {
+        this.rentInfoForm = response.data
+      }
+    })
+  },
   methods: {
     getAllRoomNum(apartmentId) {
-      const res = []
       const param = { 'apartmentId': apartmentId }
       listRoomFromApartment(param).then(response => {
         if (response.code === 200) {
-          response.data.forEach(x => {
-            res.push({ key: x.id, value: x.roomNum })
-          })
+          this.roomOption = response.data
         }
       })
-      return res
     },
     cancel() {
       this.dialogVisible = false
@@ -113,7 +118,6 @@ export default {
     },
     submitUserForm() {
       this.$set(this.rentInfoForm, 'tenantId', this.tenantId)
-      console.log(this.rentInfoForm)
       saveTenantRentDetail(this.rentInfoForm).then(response => {
         if (response.code === 200) {
           this.$message({

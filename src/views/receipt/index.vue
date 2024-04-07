@@ -1,7 +1,7 @@
 <template>
   <div class="tab-container">
     <div class="el-input">
-      公寓：<el-select placeholder="请选择" clearable v-model="queryForm.apartmentId">
+      公寓：<el-select placeholder="请选择" v-model="queryForm.apartmentId">
               <el-option
                 v-for="item in apartmentOption"
                 default-first-option="true"
@@ -11,8 +11,8 @@
               </el-option>
             </el-select>
       房间号：<el-input style="width: auto" placeholder="请输入内容" v-model="queryForm.roomNum"></el-input>
-      房东ID：<el-input style="width: auto" placeholder="请输入内容" v-model="queryForm.landLordId"></el-input>
-      月份：<el-date-picker v-model="queryForm.month" type="month" placeholder="选择月">
+      房东ID：<el-input style="width: auto" placeholder="请输入内容" v-model="queryForm.userId"></el-input>
+      月份：<el-date-picker v-model="queryForm.month" type="month" value-format="yyyy-MM" placeholder="选择月">
     </el-date-picker>
     </div>
     <keep-alive>

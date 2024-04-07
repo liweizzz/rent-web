@@ -31,11 +31,15 @@
             <el-button type="danger" size="small" @click="handleDelete(scope)">
               {{ $t('permission.delete') }}
             </el-button>
+            <el-button type="danger" size="small" @click="listRoom(scope)">
+              {{ $t('permission.listRoom') }}
+            </el-button>
             <add-room v-if="addRoomBox" :apartmentId = 'scope.row.apartmentId' :apartmentName = 'scope.row.apartmentName'></add-room>
           </template>
         </el-table-column>
       </el-table>
     </div>
+    <list-room v-if="listRoomBox" :apartmentId="apartmentId"></list-room>
   </div>
 </template>
 
@@ -43,13 +47,16 @@
 import { delApartment, listApartmentByUserId } from '@/api/apartment'
 import addRoom from '@/views/apartment/components/addRoom.vue'
 import store from '@/store'
+import listRoom from '@/views/apartment/components/listRoom.vue'
 
 export default {
-  components: { addRoom },
+  components: { listRoom, addRoom },
   data() {
     return {
       apartmentList: null,
       addRoomBox: false,
+      listRoomBox: false,
+      apartmentId: null,
       param: {
         'userId': store.getters.userId
       }
@@ -80,6 +87,10 @@ export default {
           alert('删除成功')
         }
       })
+    },
+    listRoom({ row }) {
+      this.apartmentId = row.apartmentId
+      this.listRoomBox = true
     }
   }
 }

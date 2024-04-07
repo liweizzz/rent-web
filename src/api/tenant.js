@@ -48,6 +48,13 @@ export function saveTenantRentDetail(data) {
   })
 }
 
+export function getTenantRentDetailByTId(param) {
+  return request1({
+    url: '/tenantRentDetail/getTRDByTId?tenantId=' + param,
+    method: 'get'
+  })
+}
+
 export function listAllUserFromApartment(apartmentId) {
   return request1({
     url: '/tenant/listAllTenantFromApartment?apartmentId=' + apartmentId,

@@ -63,6 +63,11 @@
             {{ scope.row.waterMoney }}
           </template>
         </el-table-column>
+        <el-table-column align="center" label="人数" prop="peopleCount">
+          <template slot-scope="scope">
+            {{ scope.row.peopleCount }}
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="网费" prop="internetMoney">
           <template slot-scope="scope">
             {{ scope.row.internetMoney }}

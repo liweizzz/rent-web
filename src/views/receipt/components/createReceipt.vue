@@ -1,6 +1,6 @@
 <template>
   <el-dialog :visible.sync="dialogVisible" :before-close="handleClose" :title="dialogType==='edit'?'修改收据':'创建收据'">
-    <el-form :model="receiptForm" label-position="left">
+    <el-form :model="receiptForm" label-position="top">
       <el-row>
         <el-col :span="8">
           <el-form-item label="房间号" prop="roomNum">
@@ -176,7 +176,7 @@ export default {
         }).catch(_ => {})
     },
     submitReceiptForm(formName) {
-      console.log(this.receiptForm)
+      this.$set(this.receiptForm, 'apartmentId', this.$parent.queryForm.apartmentId)
       createReceipt(this.receiptForm).then(response => {
         if (response.code === 200) {
           this.$message({
@@ -202,6 +202,8 @@ export default {
     },
     async roomChange(value) {
       this.receiptForm.tenantName = this.roomOption.find((item) => item.roomNum === value).tenantName
+      // 设置租户ID，生成收据时需要传此参数
+      this.receiptForm.tenantId = this.roomOption.find((item) => item.roomNum === value).tenantId
       // 通过房间号获取上次电表度数
       const response = await getLastReceiptByRoom(value)
       const receiptInfo = response.data
