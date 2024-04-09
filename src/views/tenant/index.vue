@@ -1,45 +1,51 @@
 <template>
   <div class="tab-container">
-    <div class="el-input">
-      公寓：<el-select placeholder="请选择" clearable v-model="queryForm.apartment">
-      <el-option
-        v-for="item in apartmentOption"
-        default-first-option="true"
-        :key="item.key"
-        :label="item.value"
-        :value="item.key">
-      </el-option>
-    </el-select>
-      租户ID：<el-input style="width: auto" placeholder="请输入内容" v-model="queryForm.tenantId"></el-input>
-      租户姓名：<el-input style="width: auto" placeholder="请输入内容" v-model="queryForm.tenantName"></el-input>
-      电话：<el-input style="width: auto" placeholder="请输入内容" v-model="queryForm.phone"></el-input>
-      状态：<el-select style="width: auto" placeholder="请输入内容" v-model="queryForm.status"></el-select>
+    <div>
+      <el-form :model="queryForm" :inline="true">
+        <el-form-item label="公寓" prop="apartmentId">
+          <el-select placeholder="请选择" v-model="queryForm.apartmentId">
+            <el-option v-for="item in apartmentOption" default-first-option="true" :key="item.key" :label="item.value" :value="item.key"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="租户ID" prop="tenantId">
+          <el-input clearable placeholder="请输入内容" v-model="queryForm.tenantId"></el-input>
+        </el-form-item>
+        <el-form-item label="租户姓名" prop="tenantName">
+          <el-input clearable placeholder="请输入内容" v-model="queryForm.tenantName"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" prop="phone">
+          <el-input clearable placeholder="请输入内容" v-model="queryForm.tenantId"></el-input>
+        </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-select clearable placeholder="请输入内容" v-model="queryForm.status">
+            <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value"/>
+          </el-select>
+        </el-form-item>
+      </el-form>
     </div>
     <keep-alive>
-      <tenantList v-if="tenantListTab"></tenantList>
+      <tenantList v-if="tenantListTab" :apartmentId="this.queryForm.apartmentId"></tenantList>
     </keep-alive>
-    <addTenant v-if="addbox" :apartmentId = 'this.queryForm.apartment'></addTenant>
   </div>
 </template>
 
 <script>
 import tenantList from './components/tenantList.vue'
-import addTenant from './components/addTenant.vue'
 import store from '@/store'
 
 export default {
   name: 'Tenant',
-  components: { tenantList, addTenant },
+  components: { tenantList },
   data() {
     return {
       queryForm: {},
       apartmentOption: store.getters.apartments,
       tenantListTab: true,
-      addbox: false
+      statusOptions: [{ value: '0', label: '在租' }, { value: '1', label: '退租' }]
     }
   },
   created() {
-    this.queryForm.apartment = this.apartmentOption[0].key
+    this.queryForm.apartmentId = this.apartmentOption[0].key
   }
 }
 </script>
@@ -47,9 +53,5 @@ export default {
 <style scoped>
   .tab-container {
     margin: 20px;
-  }
-  .el-input {
-    margin-right: 10px;
-    margin-bottom: 10px;
   }
 </style>

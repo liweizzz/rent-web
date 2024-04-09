@@ -34,11 +34,11 @@
             <el-button type="danger" size="small" @click="listRoom(scope)">
               {{ $t('permission.listRoom') }}
             </el-button>
-            <add-room v-if="addRoomBox" :apartmentId = 'scope.row.apartmentId' :apartmentName = 'scope.row.apartmentName'></add-room>
           </template>
         </el-table-column>
       </el-table>
     </div>
+    <add-room v-if="addRoomBox" :apartmentId = 'apartmentId' :apartmentName = 'apartmentName'></add-room>
     <list-room v-if="listRoomBox" :apartmentId="apartmentId"></list-room>
   </div>
 </template>
@@ -57,6 +57,7 @@ export default {
       addRoomBox: false,
       listRoomBox: false,
       apartmentId: null,
+      apartmentName: null,
       param: {
         'userId': store.getters.userId
       }
@@ -66,7 +67,9 @@ export default {
     this.getApartmentList()
   },
   methods: {
-    addRoom() {
+    addRoom({ row }) {
+      this.apartmentId = row.apartmentId
+      this.apartmentName = row.apartmentName
       this.addRoomBox = true
     },
     addApartmentForm() {

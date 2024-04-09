@@ -91,7 +91,7 @@ import path from 'path'
 import { deepClone } from '@/utils'
 import { getRoutes, addRole, deleteRole, updateRole } from '@/api/role'
 import i18n from '@/lang'
-import { fetchList } from '@/api/article'
+import { fetchList } from '@/api/user'
 
 const defaultRole = {
   key: '',

@@ -108,14 +108,14 @@ export const asyncRoutes = [
   chartsRouter,
 
   {
-    path: '/landlord',
+    path: '/user',
     component: Layout,
     children: [
       {
         path: 'index',
-        component: () => import('@/views/landlord/index'),
-        name: 'Landlord',
-        meta: { title: 'landlord', icon: 'list' }
+        component: () => import('@/views/user/index'),
+        name: 'User',
+        meta: { title: 'user', icon: 'list' }
       }
     ]
   },

@@ -1,20 +1,20 @@
 <template>
-  <el-dialog :visible.sync="dialogVisible" :before-close="handleClose" :title="dialogType==='edit'?'编辑房东':'新增房东'">
-    <el-form :model="landLordForm" label-position="left">
+  <el-dialog :visible.sync="dialogVisible" :before-close="handleClose" :title="dialogType==='edit'?'编辑用户':'新增用户'">
+    <el-form :model="userForm" label-position="left">
       <el-row>
         <el-col :span="8">
           <el-form-item label="姓名" prop="userName">
-            <el-input v-model="landLordForm.userName"></el-input>
+            <el-input v-model="userForm.userName"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="身份证号码" prop="idCard">
-            <el-input v-model="landLordForm.idCard"></el-input>
+            <el-input v-model="userForm.idCard"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="电话号码" prop="phone">
-            <el-input v-model="landLordForm.phone"></el-input>
+            <el-input v-model="userForm.phone"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -22,7 +22,7 @@
         <el-col :span="8">
           <el-form-item label="地区" prop="provinceCode">
             <el-cascader
-              v-model="landLordForm.areas"
+              v-model="userForm.areas"
               placeholder="请选择"
               :options="options"
               clearable
@@ -32,7 +32,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="状态" prop="status">
-            <el-select placeholder="请选择" v-model="landLordForm.status">
+            <el-select placeholder="请选择" v-model="userForm.status">
               <el-option
                 v-for="item in statusOptions"
                 :key="item.value"
@@ -43,14 +43,14 @@
         </el-col>
       </el-row>
       <el-form-item label="详细地址" prop="address">
-        <el-input v-model="landLordForm.address"></el-input>
+        <el-input v-model="userForm.address"></el-input>
       </el-form-item>
     </el-form>
     <div style="text-align:right;">
       <el-button type="danger" @click="cancel">
         {{ $t('permission.cancel') }}
       </el-button>
-      <el-button type="primary" @click="submitLandLordForm(landLordForm)">
+      <el-button type="primary" @click="submituserForm(userForm)">
         {{ $t('permission.confirm') }}
       </el-button>
     </div>
@@ -58,15 +58,15 @@
 </template>
 
 <script>
-import { getAllAreas, saveLandlord } from '@/api/article'
+import { getAllAreas, saveUser } from '@/api/user'
 
 export default {
-  name: 'AddLandLord',
+  name: 'AddUser',
   data() {
     return {
       dialogType: 'new',
       dialogVisible: true,
-      landLordForm: {},
+      userForm: {},
       options: null,
       statusOptions: [{ value: '0', label: '正常' }, { value: '1', label: '锁定' }]
     }
@@ -91,11 +91,11 @@ export default {
           this.$parent.addbox = false
         }).catch(_ => {})
     },
-    submitLandLordForm(formName) {
-      this.landLordForm.provinceCode = this.landLordForm.areas.at(0)
-      this.landLordForm.cityCode = this.landLordForm.areas.at(1)
-      delete this.landLordForm['areas']
-      saveLandlord(this.landLordForm).then(response => {
+    submituserForm(formName) {
+      this.userForm.provinceCode = this.userForm.areas.at(0)
+      this.userForm.cityCode = this.userForm.areas.at(1)
+      delete this.userForm['areas']
+      saveUser(this.userForm).then(response => {
         if (response.code === 200) {
           this.$message({
             message: '新增成功',
@@ -104,12 +104,6 @@ export default {
           this.$parent.addbox = false
         }
       })
-      // this.$refs[formName].validate((valid) => {
-      //   if (valid) {
-      //   } else {
-      //     return false
-      //   }
-      // })
     }
   }
 }

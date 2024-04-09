@@ -55,13 +55,13 @@ export default {
       this.rows.push({})
     },
     cancel() {
-      this.$parent.$parent.$parent.addRoomBox = false
+      this.$parent.addRoomBox = false
     },
     handleClose(done) {
       this.$confirm('确认关闭？')
         .then(_ => {
           done()
-          this.$parent.$parent.$parent.addRoomBox = false
+          this.$parent.addRoomBox = false
         }).catch(_ => {})
     },
     sumbitRoomForm(formName) {
@@ -74,7 +74,7 @@ export default {
             message: '新增成功',
             type: 'success'
           })
-          this.$parent.$parent.$parent.addRoomBox = false
+          this.$parent.addRoomBox = false
         }
       })
       // this.$refs[formName].validate((valid) => {

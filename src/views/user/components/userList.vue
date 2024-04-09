@@ -1,19 +1,19 @@
 <template>
   <div>
     <div>
-      <el-button type="primary" icon="el-icon-search" @click="searchLandLord">搜索</el-button>
-      <el-button type="primary" icon="el-icon-plus" @click="showLandLordForm">增加</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="searchUser">搜索</el-button>
+      <el-button type="primary" icon="el-icon-plus" @click="showUserForm">增加</el-button>
     </div>
     <div>
-      <el-table :data="landLordlist" border fit highlight-current-row style="width: 100%" >
+      <el-table :data="userList" border fit highlight-current-row style="width: 100%" >
         <el-table-column type="index" label="序号" align="center" width="50px" sortable>
         </el-table-column>
-        <el-table-column align="center" label="房东ID" prop="userId">
+        <el-table-column align="center" label="用户ID" prop="userId">
           <template slot-scope="scope">
             {{ scope.row.userId }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="房东姓名" prop="userName">
+        <el-table-column align="center" label="用户姓名" prop="userName">
           <template slot-scope="scope">
             {{ scope.row.userName }}
           </template>
@@ -48,7 +48,7 @@
             {{ scope.row.status }}
           </template>
         </el-table-column>
-        <el-table-column align="center"  width="170" label="操作">
+        <el-table-column align="center" width="170px" label="操作">
           <template slot-scope="scope">
             <el-button type="primary" size="small" @click="handleEdit(scope)">
               {{ $t('permission.editPermission') }}
@@ -66,18 +66,18 @@
         layout="total, sizes, prev, pager, next, jumper"
         :page.sync="queryParam.pageNum"
         :limit.sync="queryParam.pageSize"
-        @pagination="getLandLordList"></el-pagination>
+        @pagination="getUserList"></el-pagination>
     </div>
   </div>
 </template>
 
 <script>
-import { fetchList, delLandlord } from '@/api/article'
+import { fetchList, delUser } from '@/api/user'
 
 export default {
   data() {
     return {
-      landLordlist: null,
+      userList: null,
       queryParam: {
         pageNum: 1,
         pageSize: 10
@@ -86,13 +86,17 @@ export default {
     }
   },
   created() {
-    this.getLandLordList(this.queryParam)
+    this.getUserList(this.queryParam)
   },
   methods: {
-    searchLandLord() {
-      this.getLandLordList(this.queryParam)
+    searchUser() {
+      const queryForm = this.$parent.queryForm
+      for (const key in queryForm) {
+        this.$set(this.queryParam, key, queryForm[key])
+      }
+      this.getUserList(this.queryParam)
     },
-    showLandLordForm() {
+    showUserForm() {
       this.$parent.addbox = true
     },
     handleSizeChange(val) {
@@ -100,16 +104,12 @@ export default {
     },
     handleCurrentChange(val) {
       this.queryParam.pageNum = val
-      this.getLandLordList(this.queryParam)
+      this.getUserList(this.queryParam)
     },
-    getLandLordList(val) {
-      const queryForm = this.$parent.queryForm
-      for (const key in queryForm) {
-        this.$set(this.queryParam, key, queryForm[key])
-      }
+    getUserList(val) {
       fetchList(val).then(response => {
-        this.landLordlist = response.data.records
-        this.landLordlist.forEach(item => {
+        this.userList = response.data.records
+        this.userList.forEach(item => {
           if (item.status === '0') {
             item.status = '正常'
           }
@@ -121,9 +121,9 @@ export default {
       })
     },
     handleDelete({ row }) {
-      delLandlord(row.id).then(response => {
+      delUser(row.id).then(response => {
         if (response.code === 200) {
-          this.getLandLordList(this.listQuery)
+          this.getuserList(this.listQuery)
           alert('删除成功')
         }
       })

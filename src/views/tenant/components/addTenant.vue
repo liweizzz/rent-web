@@ -75,6 +75,7 @@ export default {
             type: 'success'
           })
           this.$parent.addbox = false
+          this.$parent.searchTenant()
         }
       })
       // this.$refs[formName].validate((valid) => {
@@ -89,7 +90,4 @@ export default {
 </script>
 
 <style scoped>
-  .el-form-item {
-    margin-right: 20px;
-  }
 </style>

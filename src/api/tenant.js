@@ -1,23 +1,7 @@
 import request from '@/utils/request'
-import request1 from '@/utils/request1'
-
-export function getInfo(token) {
-  return request({
-    url: '/vue-element-admin/user/info',
-    method: 'get',
-    params: { token }
-  })
-}
-
-export function logout() {
-  return request({
-    url: '/vue-element-admin/user/logout',
-    method: 'post'
-  })
-}
 
 export function getTenantList(query) {
-  return request1({
+  return request({
     url: '/tenant/list',
     method: 'get',
     params: query
@@ -25,15 +9,14 @@ export function getTenantList(query) {
 }
 
 export function delTenant(id) {
-  return request1({
-    url: '/tenant/del',
-    method: 'delete',
-    params: id
+  return request({
+    url: '/tenant/del?id=' + id,
+    method: 'delete'
   })
 }
 
 export function saveOrUpdateTenant(data) {
-  return request1({
+  return request({
     url: '/tenant/saveOrUpdate',
     method: 'post',
     data
@@ -41,7 +24,7 @@ export function saveOrUpdateTenant(data) {
 }
 
 export function saveTenantRentDetail(data) {
-  return request1({
+  return request({
     url: '/tenantRentDetail/saveOrUpdate',
     method: 'post',
     data
@@ -49,14 +32,14 @@ export function saveTenantRentDetail(data) {
 }
 
 export function getTenantRentDetailByTId(param) {
-  return request1({
+  return request({
     url: '/tenantRentDetail/getTRDByTId?tenantId=' + param,
     method: 'get'
   })
 }
 
 export function listAllUserFromApartment(apartmentId) {
-  return request1({
+  return request({
     url: '/tenant/listAllTenantFromApartment?apartmentId=' + apartmentId,
     method: 'get'
   })

@@ -29,7 +29,7 @@ export default {
     'menu1-2-2': '菜单 1-2-2',
     'menu1-3': '菜单 1-3',
     menu2: '菜单 2',
-    landlord: '房东管理',
+    user: '用户管理',
     tenant: '租户管理',
     receipt: '电子收据',
     apartment: '公寓管理',

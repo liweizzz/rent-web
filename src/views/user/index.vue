@@ -1,8 +1,8 @@
 <template>
   <div class="tab-container">
     <div class="el-input">
-      房东ID：<el-input v-model="queryForm.userId" style="width: 150px" placeholder="请输入内容" />
-      房东姓名：<el-input v-model="queryForm.userName" style="width: 150px" placeholder="请输入内容" />
+      用户ID：<el-input v-model="queryForm.userId" style="width: 150px" placeholder="请输入内容" />
+      用户姓名：<el-input v-model="queryForm.userName" style="width: 150px" placeholder="请输入内容" />
       电话：<el-input v-model="queryForm.phone" type="text" style="width: 150px" :class="{ 'red-text': !isValidPhoneNumber }" placeholder="请输入电话号码" @blur="validatePhoneNumber" />
       省：<el-select style="width: 150px" clearable placeholder="请选择" @change="change" v-model="queryForm.provinceId">
         <el-option
@@ -18,7 +18,7 @@
         :label="item.name"
         :value="item.code"></el-option>
     </el-select>
-      状态：<el-select v-model="queryForm.status" clearable style="width: 100px" placeholder="请选择">
+      状态：<el-select v-model="queryForm.status" clearable style="width: 150px" placeholder="请选择">
         <el-option
           v-for="item in statusOptions"
           :key="item.value"
@@ -28,20 +28,20 @@
       </el-select>
     </div>
     <keep-alive>
-      <LandLordList v-if="landLordTab" />
+      <userList v-if="landLordTab" />
     </keep-alive>
-    <AddLandLord v-if="addbox" />
+    <addUser v-if="addbox" />
   </div>
 </template>
 
 <script>
-import LandLordList from './components/landLordList'
-import AddLandLord from './components/addLandLord'
-import { getAllAreas, getAllCityByProvince } from '@/api/article'
+import userList from './components/userList.vue'
+import addUser from './components/addUser.vue'
+import { getAllAreas, getAllCityByProvince } from '@/api/user'
 
 export default {
   name: 'Landlord',
-  components: { AddLandLord, LandLordList },
+  components: { addUser, userList },
   data() {
     return {
       landLordTab: true,
