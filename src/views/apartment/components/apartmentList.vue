@@ -28,18 +28,19 @@
             <el-button type="primary" size="small" @click="addRoom(scope)">
               {{ $t('permission.addRoom') }}
             </el-button>
-            <el-button type="danger" size="small" @click="handleDelete(scope)">
-              {{ $t('permission.delete') }}
-            </el-button>
             <el-button type="danger" size="small" @click="listRoom(scope)">
               {{ $t('permission.listRoom') }}
+            </el-button>
+            <el-button type="danger" size="small" @click="handleDelete(scope)">
+              {{ $t('permission.delete') }}
             </el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
+    <addApartment v-if="addApartmentBox"></addApartment>
     <add-room v-if="addRoomBox" :apartmentId = 'apartmentId' :apartmentName = 'apartmentName'></add-room>
-    <list-room v-if="listRoomBox" :apartmentId="apartmentId"></list-room>
+    <room-list v-if="roomListBox" :apartmentId="apartmentId"></room-list>
   </div>
 </template>
 
@@ -47,15 +48,17 @@
 import { delApartment, listApartmentByUserId } from '@/api/apartment'
 import addRoom from '@/views/apartment/components/addRoom.vue'
 import store from '@/store'
-import listRoom from '@/views/apartment/components/listRoom.vue'
+import roomList from '@/views/apartment/components/roomList.vue'
+import addApartment from '@/views/apartment/components/addApartment.vue'
 
 export default {
-  components: { listRoom, addRoom },
+  components: { addApartment, roomList, addRoom },
   data() {
     return {
       apartmentList: null,
+      addApartmentBox: false,
       addRoomBox: false,
-      listRoomBox: false,
+      roomListBox: false,
       apartmentId: null,
       apartmentName: null,
       param: {
@@ -73,7 +76,7 @@ export default {
       this.addRoomBox = true
     },
     addApartmentForm() {
-      this.$parent.addbox = true
+      this.addApartmentBox = true
     },
     searchApartment() {
       this.getApartmentList()
@@ -93,7 +96,7 @@ export default {
     },
     listRoom({ row }) {
       this.apartmentId = row.apartmentId
-      this.listRoomBox = true
+      this.roomListBox = true
     }
   }
 }

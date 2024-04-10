@@ -5,7 +5,7 @@
       <el-button type="primary" icon="el-icon-plus" @click="addTenantForm">增加</el-button>
     </div>
     <div>
-      <el-table :data="tenantList" border fit highlight-current-row style="width: 100%" >
+      <el-table :data="tenantList" border height="470px" fit highlight-current-row style="width:100%;">
         <el-table-column type="index" label="序号" align="center" width="50" sortable>
         </el-table-column>
         <el-table-column align="center" label="租户ID" prop="tenantId">
@@ -38,10 +38,13 @@
             {{ scope.row.status }}
           </template>
         </el-table-column>
-        <el-table-column width="200px" align="center" label="操作">
+        <el-table-column width="260px" align="center" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" icon = "el-icon-plus" size="small" @click="addRentInfo(scope.row.apartmentId, scope.row.tenantId)">
-              {{ $t('permission.addRentInfo') }}
+            <el-button type="primary" icon = "el-icon-plus" size="small" @click="addRentInfo(scope)">
+              {{ $t('permission.rentDetailInfo') }}
+            </el-button>
+            <el-button type="danger" size="small" @click="editTenant(scope)">
+              {{ $t('permission.edit') }}
             </el-button>
             <el-button type="danger" size="small" @click="handleDelete(scope)">
               {{ $t('permission.delete') }}
@@ -59,7 +62,7 @@
       @pagination="getTenantList"></el-pagination>
     </div>
     <addTenantRentInfo v-if="rentDetailInfo" :tenantId = 'tenantId' :apartmentId = 'apartmentId'></addTenantRentInfo>
-    <addTenant v-if="addbox" :apartmentId = 'apartmentId'></addTenant>
+    <addTenant ref="addTenant" v-if="addbox" :apartmentId = 'apartmentId'></addTenant>
   </div>
 </template>
 
@@ -91,15 +94,11 @@ export default {
     }
   },
   created() {
-    this.getTenantList(this.queryParam)
+    this.getTenantList()
   },
   methods: {
     searchTenant() {
-      const queryForm = this.$parent.queryForm
-      for (const key in queryForm) {
-        this.$set(this.queryParam, key, queryForm[key])
-      }
-      this.getTenantList(this.queryParam)
+      this.getTenantList()
     },
     addTenantForm() {
       this.addbox = true
@@ -109,10 +108,14 @@ export default {
     },
     handleCurrentChange(val) {
       this.queryParam.pageNum = val
-      this.getTenantList(this.queryParam)
+      this.getTenantList()
     },
-    getTenantList(val) {
-      getTenantList(val).then(response => {
+    getTenantList() {
+      const queryForm = this.$parent.queryForm
+      for (const key in queryForm) {
+        this.$set(this.queryParam, key, queryForm[key])
+      }
+      getTenantList(this.queryParam).then(response => {
         this.tenantList = response.data.records
         this.tenantList.forEach(item => {
           if (item.status === '0') {
@@ -130,17 +133,24 @@ export default {
         .then(_ => {
           delTenant(row.id).then(response => {
             if (response.code === 200) {
-              this.getTenantList(this.queryParam)
+              this.handleCurrentChange(1)
               alert('删除成功')
             }
           })
-          this.$parent.rentDetailInfo = false
         }).catch(_ => {})
     },
-    addRentInfo(apartmentId, tenantId) {
-      this.apartmentId = apartmentId
-      this.tenantId = tenantId
+    addRentInfo({ row }) {
+      this.apartmentId = row.apartmentId
+      this.tenantId = row.tenantId
       this.rentDetailInfo = true
+    },
+    editTenant({ row }) {
+      this.addbox = true
+      // 使用 this.$nextTick 来确保在 DOM 更新完成后再访问 $refs,否则
+      this.$nextTick(() => {
+        this.$refs.addTenant.dialogType = 'edit'
+        this.$refs.addTenant.getTenantInfo(row.id)
+      })
     }
   }
 }

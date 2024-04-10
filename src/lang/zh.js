@@ -59,7 +59,8 @@ export default {
   },
   permission: {
     addLandLord: '新增房东',
-    addRentInfo: '租房详情',
+    rentDetailInfo: '租房详情',
+    edit: '编辑',
     createReceipt: '变更',
     addRoom: '增加房间',
     listRoom: '房间列表',

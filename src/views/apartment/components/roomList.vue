@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-dialog :visible.sync="roomListVisible" :before-close="handleClose" title="房间列表">
-      <el-table :data="roomList" border fit highlight-current-row style="width: 100%;height: 400px;overflow-y: auto;" >
-        <el-table-column type="index" label="序号" align="center" width="50" sortable>
+      <el-table :data="roomList" border fit height="400px" highlight-current-row style="width: 100%;">
+        <el-table-column type="index" label="序号" align="center" width="50px" sortable>
         </el-table-column>
         <el-table-column align="center" label="房间号" prop="roomNum">
           <template slot-scope="scope">
@@ -24,7 +24,7 @@
 import { listRoomFromApartment } from '@/api/room'
 
 export default {
-  name: 'ListRoom',
+  name: 'RoomList',
   props: {
     apartmentId: {
       type: String
@@ -47,7 +47,7 @@ export default {
       })
     },
     handleClose(done) {
-      this.$parent.listRoomBox = false
+      this.$parent.roomListBox = false
     }
   }
 }

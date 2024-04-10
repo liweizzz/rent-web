@@ -35,13 +35,13 @@ export default {
   },
   methods: {
     cancel() {
-      this.$parent.addbox = false
+      this.$parent.addApartmentBox = false
     },
     handleClose(done) {
       this.$confirm('确认关闭？')
         .then(_ => {
           done()
-          this.$parent.addbox = false
+          this.$parent.addApartmentBox = false
         }).catch(_ => {})
     },
     submitApartmentForm(formName) {
@@ -52,15 +52,10 @@ export default {
             message: '新增成功',
             type: 'success'
           })
-          this.$parent.addbox = false
+          this.$parent.addApartmentBox = false
+          this.$parent.searchApartment()
         }
       })
-      // this.$refs[formName].validate((valid) => {
-      //   if (valid) {
-      //   } else {
-      //     return false
-      //   }
-      // })
     }
   }
 }

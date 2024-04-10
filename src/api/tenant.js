@@ -23,6 +23,13 @@ export function saveOrUpdateTenant(data) {
   })
 }
 
+export function getTenantInfo(id) {
+  return request({
+    url: '/tenant/getTenantInfo?id=' + id,
+    method: 'get'
+  })
+}
+
 export function saveTenantRentDetail(data) {
   return request({
     url: '/tenantRentDetail/saveOrUpdate',

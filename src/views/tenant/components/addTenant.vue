@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { saveOrUpdateTenant } from '@/api/tenant'
+import {getTenantInfo, saveOrUpdateTenant} from '@/api/tenant'
 import store from '@/store'
 
 export default {
@@ -78,12 +78,13 @@ export default {
           this.$parent.searchTenant()
         }
       })
-      // this.$refs[formName].validate((valid) => {
-      //   if (valid) {
-      //   } else {
-      //     return false
-      //   }
-      // })
+    },
+    getTenantInfo(value) {
+      getTenantInfo(value).then(response => {
+        if (response.code === 200) {
+          this.tenantForm = response.data
+        }
+      })
     }
   }
 }
