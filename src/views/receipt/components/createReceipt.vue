@@ -128,7 +128,7 @@
       <el-button type="danger" @click="cancel">
         {{ $t('permission.cancel') }}
       </el-button>
-      <el-button type="primary" @click="submitReceiptForm(receiptForm)">
+      <el-button type="primary" @click="submitReceiptForm">
         {{ $t('permission.confirm') }}
       </el-button>
     </div>
@@ -136,13 +136,19 @@
 </template>
 
 <script>
-import { createReceipt, getLastReceiptByRoom } from '@/api/receipt'
+import { createReceipt, getLastReceiptByRoom, getReceipt } from '@/api/receipt'
 import { listAllUserFromApartment } from '@/api/tenant'
 import { DICT_TYPE, getDictData } from '@/utils/dict'
 import { addOneDay, getEndDay } from '@/utils/date'
 
 export default {
   name: 'AddReceipt',
+  props: {
+    apartmentId: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       dialogType: 'new',
@@ -175,8 +181,8 @@ export default {
           this.$parent.addbox = false
         }).catch(_ => {})
     },
-    submitReceiptForm(formName) {
-      this.$set(this.receiptForm, 'apartmentId', this.$parent.queryForm.apartmentId)
+    submitReceiptForm() {
+      this.$set(this.receiptForm, 'apartmentId', this.apartmentId)
       createReceipt(this.receiptForm).then(response => {
         if (response.code === 200) {
           this.$message({
@@ -184,17 +190,19 @@ export default {
             type: 'success'
           })
           this.$parent.addbox = false
+          this.$parent.searchReceipt()
         }
       })
-      // this.$refs[formName].validate((valid) => {
-      //   if (valid) {
-      //   } else {
-      //     return false
-      //   }
-      // })
+    },
+    getReceipt(id) {
+      getReceipt(id).then(response => {
+        if (response.code === 200) {
+          this.receiptForm = response.data
+        }
+      })
     },
     listRoomTenant() {
-      listAllUserFromApartment(this.$parent.queryForm.apartmentId).then(response => {
+      listAllUserFromApartment(this.$parent.apartmentId).then(response => {
         if (response.code === 200) {
           this.roomOption = response.data
         }
@@ -224,7 +232,4 @@ export default {
 </script>
 
 <style scoped>
-  .el-form-item {
-    margin-right: 20px;
-  }
 </style>

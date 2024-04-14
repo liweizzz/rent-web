@@ -10,9 +10,23 @@ export function getReceiptList(query) {
 
 export function delReceipt(id) {
   return request({
-    url: '/receipt/del',
-    method: 'delete',
-    params: id
+    url: '/receipt/del?id=' + id,
+    method: 'delete'
+  })
+}
+
+export function getReceipt(id) {
+  return request({
+    url: '/receipt/getReceipt?id=' + id,
+    method: 'get'
+  })
+}
+
+export function getReceiptImg(id) {
+  return request({
+    url: '/receipt/getReceiptImg?id=' + id,
+    method: 'get',
+    responseType: 'blob'
   })
 }
 

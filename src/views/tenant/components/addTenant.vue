@@ -1,6 +1,6 @@
 <template>
   <el-dialog :visible.sync="dialogVisible" :before-close="handleClose" :title="dialogType==='edit'?'编辑房客':'新增房客'">
-    <el-form :model="tenantForm" label-position="left">
+    <el-form :model="tenantForm" :rules="rules" label-position="left">
       <el-row>
         <el-col :span="8">
           <el-form-item label="姓名" prop="userName">
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import {getTenantInfo, saveOrUpdateTenant} from '@/api/tenant'
+import { getTenantInfo, saveOrUpdateTenant } from '@/api/tenant'
 import store from '@/store'
 
 export default {
@@ -49,7 +49,11 @@ export default {
     return {
       dialogType: 'new',
       dialogVisible: true,
-      tenantForm: {}
+      tenantForm: {},
+      rules: {
+        phone: { validator: this.validatePhoneNumber, trigger: 'blur' },
+        idCard: { validator: this.validateIdCard, trigger: 'blur' }
+      }
     }
   },
   methods: {
@@ -85,6 +89,26 @@ export default {
           this.tenantForm = response.data
         }
       })
+    },
+    validatePhoneNumber(rule, value, callback) {
+      if (value === null || value === undefined || value === '') {
+        return
+      }
+      // 正则表达式用于验证电话号码是否符合格式要求
+      const phonePattern = /^1[3-9]\d{9}$/
+      if (!phonePattern.test(this.tenantForm.phone)) {
+        callback('请正确填写11位手机号码')
+      }
+    },
+    validateIdCard(rule, value, callback) {
+      if (value === null || value === undefined || value === '') {
+        return
+      }
+      // 正则表达式用于验证电话号码是否符合格式要求
+      const regex = /^[1-9]\d{5}(18|19|20|21|22)?\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}(\d|[Xx])$/
+      if (!regex.test(this.tenantForm.idCard)) {
+        callback('请正确填写身份证号')
+      }
     }
   }
 }

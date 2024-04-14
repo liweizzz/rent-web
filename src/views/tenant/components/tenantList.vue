@@ -38,15 +38,15 @@
             {{ scope.row.status }}
           </template>
         </el-table-column>
-        <el-table-column width="260px" align="center" label="操作">
+        <el-table-column width="300px" align="center" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" icon = "el-icon-plus" size="small" @click="addRentInfo(scope)">
+            <el-button type="primary" icon = "el-icon-plus" size="small" @click="addRentDetailInfo(scope)">
               {{ $t('permission.rentDetailInfo') }}
             </el-button>
-            <el-button type="danger" size="small" @click="editTenant(scope)">
+            <el-button type="primary" icon = "el-icon-edit" size="small" @click="editTenant(scope)">
               {{ $t('permission.edit') }}
             </el-button>
-            <el-button type="danger" size="small" @click="handleDelete(scope)">
+            <el-button type="danger" icon = "el-icon-delete" size="small" @click="handleDelete(scope)">
               {{ $t('permission.delete') }}
             </el-button>
           </template>
@@ -139,7 +139,7 @@ export default {
           })
         }).catch(_ => {})
     },
-    addRentInfo({ row }) {
+    addRentDetailInfo({ row }) {
       this.apartmentId = row.apartmentId
       this.tenantId = row.tenantId
       this.rentDetailInfo = true

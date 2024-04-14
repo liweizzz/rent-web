@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="dialogVisible" :before-close="handleClose" :title="dialogType==='edit'?'编辑':'新增'">
+  <el-dialog :visible.sync="dialogVisible" :before-close="handleClose" title='新增'>
     <el-form :model="rentInfoForm" label-position="top">
       <el-row>
         <el-col :span="8">
@@ -82,7 +82,6 @@ export default {
   },
   data() {
     return {
-      dialogType: 'new',
       dialogVisible: true,
       rentInfoForm: {},
       statusOptions: [{ value: '0', label: '在租' }, { value: '1', label: '退租' }],
@@ -92,6 +91,13 @@ export default {
   created() {
     getTenantRentDetailByTId(this.tenantId).then(response => {
       if (response.code === 200) {
+        const data = response.data
+        if (data.rentStatus === 0) {
+          data.rentStatus = '在租'
+        }
+        if (data.rentStatus === 1) {
+          data.rentStatus = '退租'
+        }
         this.rentInfoForm = response.data
       }
     })

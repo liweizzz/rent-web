@@ -5,20 +5,14 @@
       <el-button type="primary" icon="el-icon-plus" @click="addReceiptForm">创建收据</el-button>
     </div>
     <div>
-      <el-table :data="receiptList" border fit highlight-current-row style="width: 100%">
-        <el-table-column type="index" label="序号" align="center" width="50px" sortable>
-        </el-table-column>
-        <el-table-column align="center" label="租户ID" prop="userId">
-          <template slot-scope="scope">
-            {{ scope.row.userId }}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="租户姓名" prop="tenantName">
+      <el-table :data="receiptList" border height="520px" fit highlight-current-row style="width: 100%">
+        <el-table-column type="index" label="序号" align="center" sortable />
+        <el-table-column align="center" width="70px" label="租户姓名" prop="tenantName">
           <template slot-scope="scope">
             {{ scope.row.tenantName }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="房间号" prop="roomNum">
+        <el-table-column align="center" width="50px" label="房间号" prop="roomNum">
           <template slot-scope="scope">
             {{ scope.row.roomNum }}
           </template>
@@ -33,7 +27,7 @@
             {{ scope.row.rentEndDay }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="房租金额" prop="rentMoney">
+        <el-table-column align="center" width="60px" label="房租金额" prop="rentMoney">
           <template slot-scope="scope">
             {{ scope.row.rentMoney }}
           </template>
@@ -48,45 +42,48 @@
             {{ scope.row.curElecNum }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="电费单价" prop="elecPrice">
+        <el-table-column align="center" width="60px" label="电费单价" prop="elecPrice">
           <template slot-scope="scope">
             {{ scope.row.elecPrice }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="电费" prop="elecMoney">
+        <el-table-column align="center" width="60px" label="电费" prop="elecMoney">
           <template slot-scope="scope">
             {{ scope.row.elecMoney }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="水费" prop="waterMoney">
+        <el-table-column align="center" width="50px" label="水费" prop="waterMoney">
           <template slot-scope="scope">
             {{ scope.row.waterMoney }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="人数" prop="peopleCount">
+        <el-table-column align="center" width="50px" label="人数" prop="peopleCount">
           <template slot-scope="scope">
             {{ scope.row.peopleCount }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="网费" prop="internetMoney">
+        <el-table-column align="center" width="50px" label="网费" prop="internetMoney">
           <template slot-scope="scope">
             {{ scope.row.internetMoney }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="收款人" prop="signature">
+        <el-table-column align="center" width="50px" label="收款人" prop="signature">
           <template slot-scope="scope">
             {{ scope.row.signature }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="备注" prop="note">
+        <el-table-column align="center" width="50px" label="备注" prop="note">
           <template slot-scope="scope">
             {{ scope.row.note }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作">
+        <el-table-column align="center" width="240px" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" size="small" @click="createReceipt(scope)">
-              {{ $t('permission.createReceipt') }}
+            <el-button type="primary" size="small" @click="showReceipt(scope)">
+              {{ $t('permission.showReceipt') }}
+            </el-button>
+            <el-button type="primary" size="small" @click="editReceipt(scope)">
+              {{ $t('permission.editReceipt') }}
             </el-button>
             <el-button type="danger" size="small" @click="handleDelete(scope)">
               {{ $t('permission.delete') }}
@@ -104,19 +101,34 @@
         @pagination="getReceiptList"
       />
     </div>
+    <div>
+      <el-dialog :visible.sync="dialogVisible">
+        <img :src="receiptImage" alt="收据">
+      </el-dialog>
+    </div>
+    <createReceipt ref="createReceipt" v-if="addbox" :apartmentId = 'apartmentId'></createReceipt>
   </div>
 </template>
 
 <script>
-import { createReceipt, delReceipt, getReceiptList } from '@/api/receipt'
-import store from '@/store'
+import { delReceipt, getReceiptImg, getReceiptList } from '@/api/receipt'
+import createReceipt from '@/views/receipt/components/createReceipt.vue'
 
 export default {
+  components: { createReceipt },
+  props: {
+    apartmentId: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       receiptList: null,
+      dialogVisible: false,
+      receiptImage: null,
+      addbox: false,
       queryParam: {
-        userId: store.getters.userId,
         pageNum: 1,
         pageSize: 10
       },
@@ -124,41 +136,36 @@ export default {
     }
   },
   created() {
-    this.getReceiptList(this.queryParam)
+    this.getReceiptList()
   },
   methods: {
     addReceiptForm() {
-      this.$parent.addbox = true
+      this.addbox = true
     },
-    createReceipt($index) {
-      createReceipt($index.row).then(response => {
-        if (response.code === 200) {
-          this.$message({
-            message: '收据成功生成！',
-            type: 'success'
-          })
-        }
+    editReceipt({ row }) {
+      this.addbox = true
+      // 使用 this.$nextTick 来确保在 DOM 更新完成后再访问 $refs,否则
+      this.$nextTick(() => {
+        this.$refs.createReceipt.dialogType = 'edit'
+        this.$refs.createReceipt.getReceipt(row.id)
       })
     },
     searchReceipt() {
-      this.getReceiptList(this.queryParam)
-    },
-    showLandLordForm() {
-      this.$parent.addbox = true
+      this.getReceiptList()
     },
     handleSizeChange(val) {
       this.queryParam.pageSize = val
     },
     handleCurrentChange(val) {
       this.queryParam.pageNum = val
-      this.getReceiptList(this.queryParam)
+      this.getReceiptList()
     },
-    getReceiptList(val) {
+    getReceiptList() {
       const queryForm = this.$parent.queryForm
       for (const key in queryForm) {
         this.$set(this.queryParam, key, queryForm[key])
       }
-      getReceiptList(val).then(response => {
+      getReceiptList(this.queryParam).then(response => {
         this.receiptList = response.data.records
         this.total = response.data.total
       })
@@ -166,9 +173,16 @@ export default {
     handleDelete({ row }) {
       delReceipt(row.id).then(response => {
         if (response.code === 200) {
-          this.getReceiptList(this.queryParam)
+          this.getReceiptList()
           alert('删除成功')
         }
+      })
+    },
+    showReceipt({ row }) {
+      getReceiptImg(row.id).then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]), { type: 'image/png' })
+        this.receiptImage = url
+        this.dialogVisible = true
       })
     }
   }
