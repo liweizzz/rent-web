@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="dialogVisible" :before-close="handleClose" :title="dialogType==='edit'?'编辑房客':'新增房客'">
+  <el-dialog :visible.sync="dialogVisible" :before-close="handleClose" :title="dialogType==='edit'?'修改租户':'新增租户'">
     <el-form :model="tenantForm" :rules="rules" label-position="left">
       <el-row>
         <el-col :span="8">

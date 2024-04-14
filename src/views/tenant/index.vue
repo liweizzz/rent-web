@@ -7,9 +7,6 @@
             <el-option v-for="item in apartmentOption" default-first-option="true" :key="item.key" :label="item.value" :value="item.key"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="租户ID" prop="tenantId">
-          <el-input clearable placeholder="请输入内容" v-model="queryForm.tenantId"></el-input>
-        </el-form-item>
         <el-form-item label="租户姓名" prop="tenantName">
           <el-input clearable placeholder="请输入内容" v-model="queryForm.tenantName"></el-input>
         </el-form-item>

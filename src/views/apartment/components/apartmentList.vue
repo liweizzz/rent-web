@@ -23,15 +23,15 @@
             {{ scope.row.address }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作">
+        <el-table-column width="400px" align="center" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" size="small" @click="addRoom(scope)">
+            <el-button type="primary" icon = "el-icon-plus" size="small" @click="addRoom(scope)">
               {{ $t('permission.addRoom') }}
             </el-button>
-            <el-button type="danger" size="small" @click="listRoom(scope)">
+            <el-button type="primary" icon = "el-icon-s-grid" size="small" @click="listRoom(scope)">
               {{ $t('permission.listRoom') }}
             </el-button>
-            <el-button type="danger" size="small" @click="handleDelete(scope)">
+            <el-button type="danger" icon = "el-icon-delete" size="small" @click="handleDelete(scope)">
               {{ $t('permission.delete') }}
             </el-button>
           </template>
@@ -87,11 +87,13 @@ export default {
       })
     },
     handleDelete({ row }) {
-      delApartment(row.id).then(response => {
-        if (response.code === 200) {
-          this.getApartmentList()
-          alert('删除成功')
-        }
+      this.$confirm('确认删除？', { type: 'warning' }).then(_ => {
+        delApartment(row.id).then(response => {
+          if (response.code === 200) {
+            this.getApartmentList()
+            alert('删除成功')
+          }
+        })
       })
     },
     listRoom({ row }) {

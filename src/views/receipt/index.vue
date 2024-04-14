@@ -10,8 +10,8 @@
         <el-form-item label="房间号" prop="roomNum">
           <el-input clearable placeholder="请输入内容" v-model="queryForm.roomNum"></el-input>
         </el-form-item>
-        <el-form-item label="房东ID" prop="userId">
-          <el-input clearable placeholder="请输入内容" v-model="queryForm.userId"></el-input>
+        <el-form-item label="房东姓名" prop="userId">
+          <el-input clearable placeholder="请输入内容" v-model="queryForm.userName"></el-input>
         </el-form-item>
         <el-form-item label="月份" prop="month">
           <el-date-picker v-model="queryForm.month" type="month" value-format="yyyy-MM" placeholder="选择月">

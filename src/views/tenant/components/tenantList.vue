@@ -5,15 +5,10 @@
       <el-button type="primary" icon="el-icon-plus" @click="addTenantForm">增加</el-button>
     </div>
     <div>
-      <el-table :data="tenantList" border height="470px" fit highlight-current-row style="width:100%;">
-        <el-table-column type="index" label="序号" align="center" width="50" sortable>
+      <el-table :data="tenantList" border height="520px" fit highlight-current-row style="width:100%;">
+        <el-table-column type="index" label="序号" align="center" sortable>
         </el-table-column>
-        <el-table-column align="center" label="租户ID" prop="tenantId">
-          <template slot-scope="scope">
-            {{ scope.row.tenantId }}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="租户姓名" prop="userName">
+        <el-table-column align="center" width="100px" label="租户姓名" prop="userName">
           <template slot-scope="scope">
             {{ scope.row.tenantName }}
           </template>
@@ -129,15 +124,14 @@ export default {
       })
     },
     handleDelete({ row }) {
-      this.$confirm('确认删除？')
-        .then(_ => {
-          delTenant(row.id).then(response => {
-            if (response.code === 200) {
-              this.handleCurrentChange(1)
-              alert('删除成功')
-            }
-          })
-        }).catch(_ => {})
+      this.$confirm('确认删除？', { type: 'warning' }).then(_ => {
+        delTenant(row.id).then(response => {
+          if (response.code === 200) {
+            this.handleCurrentChange(1)
+            alert('删除成功')
+          }
+        })
+      }).catch(_ => {})
     },
     addRentDetailInfo({ row }) {
       this.apartmentId = row.apartmentId

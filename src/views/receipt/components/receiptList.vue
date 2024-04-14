@@ -171,11 +171,13 @@ export default {
       })
     },
     handleDelete({ row }) {
-      delReceipt(row.id).then(response => {
-        if (response.code === 200) {
-          this.getReceiptList()
-          alert('删除成功')
-        }
+      this.$confirm('确认删除？', { type: 'warning' }).then(_ => {
+        delReceipt(row.id).then(response => {
+          if (response.code === 200) {
+            this.handleCurrentChange(1)
+            alert('删除成功')
+          }
+        })
       })
     },
     showReceipt({ row }) {

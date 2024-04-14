@@ -175,7 +175,7 @@ export default {
       this.$parent.addbox = false
     },
     handleClose(done) {
-      this.$confirm('确认关闭？')
+      this.$confirm('确认关闭？', { type: 'warning' })
         .then(_ => {
           done()
           this.$parent.addbox = false
