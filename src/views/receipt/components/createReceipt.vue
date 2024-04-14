@@ -186,7 +186,7 @@ export default {
       createReceipt(this.receiptForm).then(response => {
         if (response.code === 200) {
           this.$message({
-            message: '新增成功',
+            message: this.dialogType === 'new' ? '新增成功' : '修改成功',
             type: 'success'
           })
           this.$parent.addbox = false

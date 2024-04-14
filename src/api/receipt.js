@@ -26,7 +26,6 @@ export function getReceiptImg(id) {
   return request({
     url: '/receipt/getReceiptImg?id=' + id,
     method: 'get',
-    responseType: 'blob'
   })
 }
 

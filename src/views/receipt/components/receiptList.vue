@@ -102,8 +102,8 @@
       />
     </div>
     <div>
-      <el-dialog :visible.sync="dialogVisible">
-        <img :src="receiptImage" alt="收据">
+      <el-dialog :visible.sync="dialogVisible" :show-close="false">
+        <el-image :src="receiptImage"></el-image>
       </el-dialog>
     </div>
     <createReceipt ref="createReceipt" v-if="addbox" :apartmentId = 'apartmentId'></createReceipt>
@@ -182,9 +182,10 @@ export default {
     },
     showReceipt({ row }) {
       getReceiptImg(row.id).then(response => {
-        const url = window.URL.createObjectURL(new Blob([response.data]), { type: 'image/png' })
-        this.receiptImage = url
-        this.dialogVisible = true
+        if (response.code === 200) {
+          this.receiptImage = 'data:image/png;base64,' + response.data
+          this.dialogVisible = true
+        }
       })
     }
   }
