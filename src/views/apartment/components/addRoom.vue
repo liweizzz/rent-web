@@ -58,11 +58,10 @@ export default {
       this.$parent.addRoomBox = false
     },
     handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
-          this.$parent.addRoomBox = false
-        }).catch(_ => {})
+      this.$confirm('确认关闭？', { type: 'warning' }).then(_ => {
+        done()
+        this.$parent.addRoomBox = false
+      }).catch(_ => {})
     },
     sumbitRoomForm(formName) {
       this.$set(this.roomForm, 'apartmentId', this.$props.apartmentId)
@@ -77,19 +76,10 @@ export default {
           this.$parent.addRoomBox = false
         }
       })
-      // this.$refs[formName].validate((valid) => {
-      //   if (valid) {
-      //   } else {
-      //     return false
-      //   }
-      // })
     }
   }
 }
 </script>
 
 <style scoped>
-  .el-form-item {
-    margin-right: 20px;
-  }
 </style>

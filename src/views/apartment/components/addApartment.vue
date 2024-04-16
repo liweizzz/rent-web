@@ -38,11 +38,10 @@ export default {
       this.$parent.addApartmentBox = false
     },
     handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
-          this.$parent.addApartmentBox = false
-        }).catch(_ => {})
+      this.$confirm('确认关闭？', { type: 'warning' }).then(_ => {
+        done()
+        this.$parent.addApartmentBox = false
+      }).catch(_ => {})
     },
     submitApartmentForm(formName) {
       Vue.set(this.apartmentForm, 'userId', store.getters.userId)
@@ -62,7 +61,4 @@ export default {
 </script>
 
 <style scoped>
-  .el-form-item {
-    margin-right: 20px;
-  }
 </style>

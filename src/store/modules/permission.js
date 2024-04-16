@@ -27,30 +27,41 @@ const actions = {
 }
 
 function filterAsyncRouter(privileges) {
-  const res = []
-  privileges.forEach(item => {
-    const route = {}
-    if (item.parent === 0) {
-      route.component = Layout
-      // 找到第一个斜杠的位置
-      const firstSlashIndex = item.path.indexOf('/')
-      // 找到第二个斜杠的位置
-      const secondSlashIndex = item.path.indexOf('/', firstSlashIndex + 1)
-      if (firstSlashIndex !== -1 && secondSlashIndex !== -1) {
-        const firstPart = item.path.substring(0, secondSlashIndex).trim()
-        const secondPart = item.path.substring(secondSlashIndex + 1).trim()
-        route.path = firstPart
-        item.path = secondPart
+  return privileges.map(item => {
+    if (item.children && item.children.length > 0) {
+      const children = item.children.map(child => ({
+        path: `/${child.path.split('/')[0]}`,
+        component: loadView(child.component),
+        children: [
+          {
+            path: 'index',
+            component: loadView(child.component),
+            name: child.name,
+            meta: { title: child.name, icon: child.icon }
+          }
+        ]
+      }))
+      return {
+        path: item.path,
+        component: Layout,
+        meta: { title: item.name, icon: item.icon },
+        children: children
       }
-      item.meta = {
-        title: item.name, icon: item.icon
+    } else {
+      return {
+        path: `/${item.path.split('/')[1]}`,
+        component: Layout,
+        children: [
+          {
+            path: 'index',
+            component: loadView(item.component),
+            name: item.name,
+            meta: { title: item.name, icon: item.icon }
+          }
+        ]
       }
-      item.component = loadView(item.component)
     }
-    route.children = [item]
-    res.push(route)
   })
-  return res
 }
 
 export default {

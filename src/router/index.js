@@ -113,9 +113,29 @@ export const asyncRoutes = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/user/index'),
+        component: () => import('@/views/system/user/index'),
         name: 'User',
         meta: { title: 'user', icon: 'list' }
+      }
+    ]
+  },
+
+  {
+    path: '/system',
+    component: Layout,
+    meta: { title: '系统设置', icon: 'list' },
+    children: [
+      {
+        path: '/user',
+        component: () => import('@/views/system/user/index'),
+        children: [
+          {
+            path: '/index',
+            component: () => import('@/views/system/user/index'),
+            name: 'User',
+            meta: { title: 'user', icon: 'list' }
+          }
+        ]
       }
     ]
   },
@@ -128,7 +148,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/tenant/index'),
         name: 'Tenant',
-        meta: { title: 'tenant', icon: 'list' }
+        meta: { title: '查看', icon: 'list' }
       }
     ]
   },
