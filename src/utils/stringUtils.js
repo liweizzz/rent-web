@@ -1,5 +1,5 @@
 export function isNotEmpty(str) {
-  if (!str || str.length === 0) {
+  if (!str && str.length === 0) {
     return false
   }
   if (!str.trim()) {

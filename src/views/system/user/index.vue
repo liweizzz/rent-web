@@ -11,9 +11,9 @@
         <el-form-item label="电话" prop="phone">
           <el-input v-model="queryForm.phone" style="width: 150px" placeholder="请输入内容" />
         </el-form-item>
-        <el-form-item label="省" prop="provinceId">
-          <el-select style="width: 150px" clearable placeholder="请选择" @change="change" v-model="queryForm.provinceId">
-            <el-option v-for="item in provinceOptions" :key="item.code" :label="item.name" :value="item.id"/>
+        <el-form-item label="省" prop="provinceCode">
+          <el-select style="width: 150px" clearable placeholder="请选择" @change="change" v-model="queryForm.provinceCode">
+            <el-option v-for="item in provinceOptions" :key="item.code" :label="item.name" :value="item.code"/>
           </el-select>
         </el-form-item>
         <el-form-item label="市" prop="cityCode">
@@ -29,31 +29,30 @@
       </el-form>
     </div>
     <keep-alive>
-      <userList v-if="landLordTab" />
+      <userList v-if="userTab" />
     </keep-alive>
-    <addUser v-if="addbox" />
   </div>
 </template>
 
 <script>
 import userList from './components/userList.vue'
-import addUser from './components/addUser.vue'
 import { getAllAreas, getAllCityByProvince } from '@/api/user'
+import { validatePhoneNumber } from '@/utils/validate'
+import { isNotEmpty } from '@/utils/stringUtils'
 
 export default {
-  name: 'Tenant',
-  components: { addUser, userList },
+  name: 'User',
+  components: { userList },
   data() {
     return {
-      landLordTab: true,
-      addbox: false,
+      userTab: true,
       queryForm: {},
       provinceOptions: this.getAllProvince(),
       cityOptions: {},
       isValidPhoneNumber: true, // 标志位，用于标识电话号码是否有效
       statusOptions: [{ value: '0', label: '正常' }, { value: '1', label: '锁定' }],
       rules: {
-        phone: { validator: this.validatePhoneNumber, trigger: 'blur' }
+        phone: { validator: validatePhoneNumber, trigger: 'blur' }
       }
     }
   },
@@ -66,20 +65,12 @@ export default {
       })
     },
     change(value) {
-      getAllCityByProvince(value).then(response => {
-        if (response.code === 200) {
-          this.cityOptions = response.data
-        }
-      })
-    },
-    validatePhoneNumber(rule, value, callback) {
-      if (value === null || value === undefined || value === '') {
-        return
-      }
-      // 正则表达式用于验证电话号码是否符合格式要求
-      const phonePattern = /^1[3-9]\d{9}$/
-      if (!phonePattern.test(this.queryForm.phone)) {
-        callback('请正确填写11位手机号码')
+      if (isNotEmpty(value)) {
+        getAllCityByProvince(value).then(response => {
+          if (response.code === 200) {
+            this.cityOptions = response.data
+          }
+        })
       }
     }
   }

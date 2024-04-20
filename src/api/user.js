@@ -37,9 +37,9 @@ export function getAllAreas() {
   })
 }
 
-export function getAllCityByProvince(id) {
+export function getAllCityByProvince(code) {
   return request({
-    url: '/city/getAllCitysByProvinceId?provinceId=' + id,
+    url: '/city/getAllCitysByProvinceCode?provinceCode=' + code,
     method: 'get'
   })
 }
@@ -49,6 +49,14 @@ export function saveUser(data) {
     url: '/user/saveOrUpdate',
     method: 'post',
     data
+  })
+}
+
+export function getUser(id) {
+  return request({
+    url: '/user/get',
+    method: 'get',
+    params: { id }
   })
 }
 

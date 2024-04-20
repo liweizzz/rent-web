@@ -1,12 +1,13 @@
 import { getInfo, login, logout } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
+import {isNotEmpty} from "@/utils/stringUtils";
 
 const state = {
   token: getToken(),
   username: '',
   userId: '',
-  roles: [],
+  roleId: '',
   apartments: []
 }
 
@@ -20,8 +21,8 @@ const mutations = {
   SET_USERNAME: (state, username) => {
     state.username = username
   },
-  SET_ROLES: (state, roles) => {
-    state.roles = roles
+  SET_ROLEID: (state, roleId) => {
+    state.roleId = roleId
   },
   SET_PRIVILEGES: (state, privileges) => {
     state.privileges = privileges
@@ -57,13 +58,10 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, username, userId, privileges, apartments } = data
+        const { roleId, username, userId, privileges, apartments } = data
 
         // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
-        }
-        commit('SET_ROLES', roles)
+        commit('SET_ROLEID', roleId)
         commit('SET_USERNAME', username)
         commit('SET_USERID', userId)
         commit('SET_PRIVILEGES', privileges)
@@ -81,7 +79,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       logout().then(() => {
         commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
+        commit('SET_ROLEID', '')
         commit('SET_PRIVILEGES', [])
         removeToken()
         resetRouter()
@@ -94,16 +92,6 @@ const actions = {
       }).catch(error => {
         reject(error)
       })
-    })
-  },
-
-  // remove token
-  resetToken({ commit }) {
-    return new Promise(resolve => {
-      commit('SET_TOKEN', '')
-      commit('SET_ROLES', [])
-      removeToken()
-      resolve()
     })
   },
 

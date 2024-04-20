@@ -1,6 +1,6 @@
 <template>
   <el-dialog :visible.sync="dialogVisible" :before-close="handleClose" :title="dialogType==='edit'?'编辑用户':'新增用户'">
-    <el-form :model="userForm" label-position="left">
+    <el-form :model="userForm" :rules="rules" label-position="left">
       <el-row>
         <el-col :span="8">
           <el-form-item label="姓名" prop="userName">
@@ -26,8 +26,19 @@
               placeholder="请选择"
               :options="options"
               clearable
-              :props="{ expandTrigger: 'hover' ,value:'code',label:'name',children:'cityList'}"
-              @visible-change="handleChange"></el-cascader>
+              :props="{ expandTrigger: 'hover' ,value:'code',label:'name',children:'cityList'}">
+            </el-cascader>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="角色" prop="roleId">
+            <el-select placeholder="请选择" v-model="userForm.roleName">
+              <el-option
+                v-for="item in roleOptions"
+                :key="item.id"
+                :label="item.roleName"
+                :value="item.id"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -58,7 +69,9 @@
 </template>
 
 <script>
-import { getAllAreas, saveUser } from '@/api/user'
+import { getAllAreas, getUser, saveUser } from '@/api/user'
+import { validateIdCard, validatePhoneNumber } from '@/utils/validate'
+import { getRoles } from '@/api/role'
 
 export default {
   name: 'AddUser',
@@ -68,24 +81,27 @@ export default {
       dialogVisible: true,
       userForm: {},
       options: null,
-      statusOptions: [{ value: '0', label: '正常' }, { value: '1', label: '锁定' }]
+      statusOptions: [{ value: '0', label: '正常' }, { value: '1', label: '锁定' }],
+      roleOptions: this.getRoleOptions(),
+      rules: {
+        phone: { validator: validatePhoneNumber, trigger: 'blur' },
+        idCard: { validator: validateIdCard, trigger: 'blur' }
+      }
     }
   },
-  methods: {
-    handleChange(flag) {
-      if (flag) {
-        getAllAreas().then(response => {
-          if (response.code === 200) {
-            this.options = response.data
-          }
-        })
+  created() {
+    getAllAreas().then(response => {
+      if (response.code === 200) {
+        this.options = response.data
       }
-    },
+    })
+  },
+  methods: {
     cancel() {
       this.$parent.addbox = false
     },
     handleClose(done) {
-      this.$confirm('确认关闭？')
+      this.$confirm('确认关闭？', { type: 'warning' })
         .then(_ => {
           done()
           this.$parent.addbox = false
@@ -102,6 +118,22 @@ export default {
             type: 'success'
           })
           this.$parent.addbox = false
+          this.$parent.searchUser()
+        }
+      })
+    },
+    editUser(id) {
+      getUser(id).then(response => {
+        if (response.code === 200) {
+          this.userForm = response.data
+          this.userForm.areas = [response.data.province, response.data.city]
+        }
+      })
+    },
+    getRoleOptions() {
+      getRoles().then(response =>{
+        if (response.code === 200) {
+          this.roleOptions = response.data
         }
       })
     }
@@ -110,7 +142,4 @@ export default {
 </script>
 
 <style scoped>
-  .el-form-item {
-    margin-right: 20px;
-  }
 </style>

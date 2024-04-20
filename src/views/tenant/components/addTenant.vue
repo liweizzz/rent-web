@@ -36,6 +36,7 @@
 <script>
 import { getTenantInfo, saveOrUpdateTenant } from '@/api/tenant'
 import store from '@/store'
+import { validateIdCard, validatePhoneNumber } from '@/utils/validate'
 
 export default {
   name: 'AddTenant',
@@ -51,8 +52,8 @@ export default {
       dialogVisible: true,
       tenantForm: {},
       rules: {
-        phone: { validator: this.validatePhoneNumber, trigger: 'blur' },
-        idCard: { validator: this.validateIdCard, trigger: 'blur' }
+        phone: { validator: validatePhoneNumber, trigger: 'blur' },
+        idCard: { validator: validateIdCard, trigger: 'blur' }
       }
     }
   },
@@ -89,26 +90,6 @@ export default {
           this.tenantForm = response.data
         }
       })
-    },
-    validatePhoneNumber(rule, value, callback) {
-      if (value === null || value === undefined || value === '') {
-        return
-      }
-      // 正则表达式用于验证电话号码是否符合格式要求
-      const phonePattern = /^1[3-9]\d{9}$/
-      if (!phonePattern.test(this.tenantForm.phone)) {
-        callback('请正确填写11位手机号码')
-      }
-    },
-    validateIdCard(rule, value, callback) {
-      if (value === null || value === undefined || value === '') {
-        return
-      }
-      // 正则表达式用于验证电话号码是否符合格式要求
-      const regex = /^[1-9]\d{5}(18|19|20|21|22)?\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}(\d|[Xx])$/
-      if (!regex.test(this.tenantForm.idCard)) {
-        callback('请正确填写身份证号')
-      }
     }
   }
 }

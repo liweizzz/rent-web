@@ -2,12 +2,11 @@
   <div>
     <div>
       <el-button type="primary" icon="el-icon-search" @click="searchUser">搜索</el-button>
-      <el-button type="primary" icon="el-icon-plus" @click="showUserForm">增加</el-button>
+      <el-button type="primary" icon="el-icon-plus" @click="addUserForm">增加</el-button>
     </div>
     <div>
-      <el-table :data="userList" border fit highlight-current-row style="width: 100%" >
-        <el-table-column type="index" label="序号" align="center" width="50px" sortable>
-        </el-table-column>
+      <el-table :data="userList" border fit highlight-current-row style="width: 100%">
+        <el-table-column type="index" label="序号" align="center" width="50px" sortable />
         <el-table-column align="center" label="用户ID" prop="userId">
           <template slot-scope="scope">
             {{ scope.row.userId }}
@@ -16,6 +15,11 @@
         <el-table-column align="center" label="用户姓名" prop="userName">
           <template slot-scope="scope">
             {{ scope.row.userName }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="角色" prop="roleName">
+          <template slot-scope="scope">
+            {{ scope.row.roleName }}
           </template>
         </el-table-column>
         <el-table-column align="center" label="身份证" prop="idCard">
@@ -48,12 +52,12 @@
             {{ scope.row.status }}
           </template>
         </el-table-column>
-        <el-table-column align="center" width="170px" label="操作">
+        <el-table-column align="center" width="200px" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" size="small" @click="handleEdit(scope)">
-              {{ $t('permission.editPermission') }}
+            <el-button type="primary" icon="el-icon-edit" size="small" @click="handleEdit(scope)">
+              {{ $t('permission.edit') }}
             </el-button>
-            <el-button type="danger" size="small" @click="handleDelete(scope)">
+            <el-button type="danger" icon="el-icon-delete" size="small" @click="handleDelete(scope)">
               {{ $t('permission.delete') }}
             </el-button>
           </template>
@@ -61,23 +65,28 @@
       </el-table>
       <el-pagination
         :total="total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
         layout="total, sizes, prev, pager, next, jumper"
         :page.sync="queryParam.pageNum"
         :limit.sync="queryParam.pageSize"
-        @pagination="getUserList"></el-pagination>
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        @pagination="getUserList"
+      />
     </div>
+    <addUser v-if="addbox" ref="addUser"/>
   </div>
 </template>
 
 <script>
 import { fetchList, delUser } from '@/api/user'
+import addUser from '@/views/system/user/components/addUser.vue'
 
 export default {
+  components: { addUser },
   data() {
     return {
       userList: null,
+      addbox: false,
       queryParam: {
         pageNum: 1,
         pageSize: 10
@@ -96,8 +105,8 @@ export default {
       }
       this.getUserList(this.queryParam)
     },
-    showUserForm() {
-      this.$parent.addbox = true
+    addUserForm() {
+      this.addbox = true
     },
     handleSizeChange(val) {
       this.queryParam.pageSize = val
@@ -120,12 +129,24 @@ export default {
         this.total = response.data.total
       })
     },
+    handleEdit({ row }) {
+      this.addbox = true
+      this.$nextTick(() => {
+        this.$refs.addUser.dialogType = 'edit'
+        this.$refs.addUser.editUser(row.id)
+      })
+    },
     handleDelete({ row }) {
-      delUser(row.id).then(response => {
-        if (response.code === 200) {
-          this.getuserList(this.listQuery)
-          alert('删除成功')
-        }
+      this.$confirm('确认删除？', { type: 'warning' }).then(_ => {
+        delUser(row.id).then(response => {
+          if (response.code === 200) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
+            this.getuserList(this.listQuery)
+          }
+        })
       })
     }
   }
