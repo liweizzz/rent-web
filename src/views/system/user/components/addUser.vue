@@ -53,9 +53,18 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="详细地址" prop="address">
-        <el-input v-model="userForm.address"></el-input>
-      </el-form-item>
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="登录密码" prop="password">
+            <el-input v-model="userForm.password" show-password></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="16">
+          <el-form-item label="详细地址" prop="address">
+            <el-input v-model="userForm.address"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
     <div style="text-align:right;">
       <el-button type="danger" @click="cancel">
@@ -72,7 +81,7 @@
 import { getAllAreas, getUser, saveUser } from '@/api/user'
 import { validateIdCard, validatePhoneNumber } from '@/utils/validate'
 import { getRoles } from '@/api/role'
-import {isEmptyArray, isNotEmptyArray} from "@/utils/stringUtils";
+import { isNotEmptyArray } from '@/utils/stringUtils'
 
 export default {
   name: 'AddUser',
@@ -117,7 +126,7 @@ export default {
       saveUser(this.userForm).then(response => {
         if (response.code === 200) {
           this.$message({
-            message: '新增成功',
+            message: this.dialogType === 'new' ? '新增成功' : '修改成功',
             type: 'success'
           })
           this.$parent.addbox = false
