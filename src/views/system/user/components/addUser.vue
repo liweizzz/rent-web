@@ -72,6 +72,7 @@
 import { getAllAreas, getUser, saveUser } from '@/api/user'
 import { validateIdCard, validatePhoneNumber } from '@/utils/validate'
 import { getRoles } from '@/api/role'
+import {isEmptyArray, isNotEmptyArray} from "@/utils/stringUtils";
 
 export default {
   name: 'AddUser',
@@ -108,8 +109,10 @@ export default {
         }).catch(_ => {})
     },
     submituserForm(formName) {
-      this.userForm.provinceCode = this.userForm.areas.at(0)
-      this.userForm.cityCode = this.userForm.areas.at(1)
+      if (isNotEmptyArray(this.userForm.areas)) {
+        this.userForm.provinceCode = this.userForm.areas.at(0)
+        this.userForm.cityCode = this.userForm.areas.at(1)
+      }
       delete this.userForm['areas']
       saveUser(this.userForm).then(response => {
         if (response.code === 200) {
@@ -131,7 +134,7 @@ export default {
       })
     },
     getRoleOptions() {
-      getRoles().then(response =>{
+      getRoles().then(response => {
         if (response.code === 200) {
           this.roleOptions = response.data
         }

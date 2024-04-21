@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { fetchList, delUser } from '@/api/user'
+import { delUser, getUsers } from '@/api/user'
 import addUser from '@/views/system/user/components/addUser.vue'
 
 export default {
@@ -116,7 +116,7 @@ export default {
       this.getUserList(this.queryParam)
     },
     getUserList(val) {
-      fetchList(val).then(response => {
+      getUsers(val).then(response => {
         this.userList = response.data.records
         this.userList.forEach(item => {
           if (item.status === '0') {
@@ -144,7 +144,7 @@ export default {
               message: '删除成功',
               type: 'success'
             })
-            this.getuserList(this.listQuery)
+            this.getUserList(this.queryParam)
           }
         })
       })

@@ -7,3 +7,7 @@ export function isNotEmpty(str) {
   }
   return true
 }
+
+export function isNotEmptyArray(arr) {
+  return Array.isArray(arr) && arr.length !== 0
+}

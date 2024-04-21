@@ -2,6 +2,7 @@
   <el-dialog :visible.sync="dialogVisible" :center="true" :before-close="handleClose" :title="dialogType==='edit'?'编辑角色':'新增角色'">
     <el-container>
       <el-aside>
+        <el-input v-model="roleId" v-show="false"></el-input>
         角色名称：<el-input v-model="roleName"></el-input>
       </el-aside>
       <el-main>
@@ -26,6 +27,7 @@ export default {
   name: 'AddRole',
   data() {
     return {
+      roleId: null,
       dialogType: 'new',
       dialogVisible: true,
       roleName: null,
@@ -56,6 +58,7 @@ export default {
     },
     submitRoleForm() {
       const params = {}
+      params.id = this.roleId
       params.roleName = this.roleName
       params.privilegeIdList = this.$refs.privilegeTree.getCheckedKeys()
       addOrUpdate(params).then(response => {
@@ -69,6 +72,7 @@ export default {
     editRole(id) {
       getRole(id).then(response => {
         if (response.code === 200) {
+          this.roleId = response.data.id
           this.roleName = response.data.roleName
           this.$refs.privilegeTree.setCheckedKeys(response.data.privilegeIdList)
         }

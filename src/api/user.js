@@ -22,7 +22,7 @@ export function getInfo() {
   })
 }
 
-export function fetchList(query) {
+export function getUsers(query) {
   return request({
     url: '/user/list',
     method: 'get',
