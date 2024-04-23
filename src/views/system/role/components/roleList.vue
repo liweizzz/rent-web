@@ -1,7 +1,6 @@
 <template>
   <div>
     <div>
-      <el-button type="primary" icon="el-icon-search" @click="getRoleList">搜索</el-button>
       <el-button type="primary" icon="el-icon-plus" @click="addRoleForm">增加</el-button>
     </div>
     <div>

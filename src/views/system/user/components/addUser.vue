@@ -24,7 +24,7 @@
             <el-cascader
               v-model="userForm.areas"
               placeholder="请选择"
-              :options="options"
+              :options="aresOptions"
               clearable
               :props="{ expandTrigger: 'hover' ,value:'code',label:'name',children:'cityList'}">
             </el-cascader>
@@ -32,7 +32,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="角色" prop="roleId">
-            <el-select placeholder="请选择" v-model="userForm.roleName">
+            <el-select placeholder="请选择" v-model="userForm.roleId">
               <el-option
                 v-for="item in roleOptions"
                 :key="item.id"
@@ -90,9 +90,9 @@ export default {
       dialogType: 'new',
       dialogVisible: true,
       userForm: {},
-      options: null,
+      aresOptions: null,
       statusOptions: [{ value: '0', label: '正常' }, { value: '1', label: '锁定' }],
-      roleOptions: this.getRoleOptions(),
+      roleOptions: null,
       rules: {
         phone: { validator: validatePhoneNumber, trigger: 'blur' },
         idCard: { validator: validateIdCard, trigger: 'blur' }
@@ -102,7 +102,13 @@ export default {
   created() {
     getAllAreas().then(response => {
       if (response.code === 200) {
-        this.options = response.data
+        this.aresOptions = response.data
+      }
+    })
+    getRoles().then(response => {
+      if (response.code === 200) {
+        this.roleOptions = response.data
+        console.log(this.roleOptions)
       }
     })
   },
@@ -139,13 +145,6 @@ export default {
         if (response.code === 200) {
           this.userForm = response.data
           this.userForm.areas = [response.data.province, response.data.city]
-        }
-      })
-    },
-    getRoleOptions() {
-      getRoles().then(response => {
-        if (response.code === 200) {
-          this.roleOptions = response.data
         }
       })
     }
