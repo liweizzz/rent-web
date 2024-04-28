@@ -45,7 +45,7 @@ export default {
     size: '布局大小'
   },
   login: {
-    title: '租房管理系统',
+    title: '李子园租房',
     logIn: '登录',
     username: '账号',
     password: '密码',

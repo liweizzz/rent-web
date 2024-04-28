@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'easy rent',
+  title: '李子园租房',
 
   /**
    * @type {boolean} true | false
