@@ -108,7 +108,6 @@ export default {
     getRoles().then(response => {
       if (response.code === 200) {
         this.roleOptions = response.data
-        console.log(this.roleOptions)
       }
     })
   },

@@ -6,7 +6,7 @@
         角色名称：<el-input v-model="roleName"></el-input>
       </el-aside>
       <el-main>
-        <el-tree :data="treeData" ref="privilegeTree" show-checkbox node-key="id" :props="defaultProps"/>
+        <el-tree :data="treeData" ref="privilegeTree" show-checkbox check-strictly node-key="id" :props="defaultProps"/>
       </el-main>
     </el-container>
     <div slot="footer">
