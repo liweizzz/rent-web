@@ -5,9 +5,8 @@
       <el-button type="primary" icon="el-icon-plus" @click="addTenantForm">增加</el-button>
     </div>
     <div>
-      <el-table :data="tenantList" border height="520px" fit highlight-current-row style="width:100%;">
-        <el-table-column type="index" label="序号" align="center" sortable>
-        </el-table-column>
+      <el-table :data="tenantList" border height="600px" fit highlight-current-row style="width:100%;">
+        <el-table-column type="index" label="序号" align="center" sortable />
         <el-table-column align="center" width="100px" label="租户姓名" prop="userName">
           <template slot-scope="scope">
             {{ scope.row.tenantName }}
@@ -35,13 +34,13 @@
         </el-table-column>
         <el-table-column width="300px" align="center" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" icon = "el-icon-plus" size="small" @click="addRentDetailInfo(scope)">
+            <el-button type="primary" icon="el-icon-plus" size="small" @click="addRentDetailInfo(scope)">
               {{ $t('permission.rentDetailInfo') }}
             </el-button>
-            <el-button type="primary" icon = "el-icon-edit" size="small" @click="editTenant(scope)">
+            <el-button type="primary" icon="el-icon-edit" size="small" @click="editTenant(scope)">
               {{ $t('permission.edit') }}
             </el-button>
-            <el-button type="danger" icon = "el-icon-delete" size="small" @click="handleDelete(scope)">
+            <el-button type="danger" icon="el-icon-delete" size="small" @click="handleDelete(scope)">
               {{ $t('permission.delete') }}
             </el-button>
           </template>
@@ -49,15 +48,16 @@
       </el-table>
       <el-pagination
         :total="total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
         layout="total, sizes, prev, pager, next, jumper"
         :page.sync="queryParam.pageNum"
         :limit.sync="queryParam.pageSize"
-      @pagination="getTenantList"></el-pagination>
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        @pagination="getTenantList"
+      />
     </div>
-    <addTenantRentInfo v-if="rentDetailInfo" :tenantId = 'tenantId' :apartmentId = 'apartmentId'></addTenantRentInfo>
-    <addTenant ref="addTenant" v-if="addbox" :apartmentId = 'apartmentId'></addTenant>
+    <addTenantRentInfo v-if="rentDetailInfo" :tenant-id="tenantId" :apartment-id="apartmentId" />
+    <addTenant v-if="addbox" ref="addTenant" :apartment-id="apartmentId" />
   </div>
 </template>
 
