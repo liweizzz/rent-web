@@ -7,72 +7,77 @@
     <div>
       <el-table :data="receiptList" border height="520px" fit highlight-current-row style="width: 100%">
         <el-table-column type="index" label="序号" align="center" sortable />
-        <el-table-column align="center" width="70px" label="租户姓名" prop="tenantName">
+        <el-table-column align="center" min-width="60%" label="租户姓名" prop="tenantName">
           <template slot-scope="scope">
             {{ scope.row.tenantName }}
           </template>
         </el-table-column>
-        <el-table-column align="center" width="50px" label="房间号" prop="roomNum">
+        <el-table-column align="center" min-width="60%" label="房间号" prop="roomNum">
           <template slot-scope="scope">
             {{ scope.row.roomNum }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="房租起始日期" prop="rentStartDay">
+        <el-table-column align="center" min-width="60%" label="房租起始日期" prop="rentStartDay">
           <template slot-scope="scope">
             {{ scope.row.rentStartDay }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="房租到期日期" prop="rentEndDay">
+        <el-table-column align="center" min-width="60%" label="房租到期日期" prop="rentEndDay">
           <template slot-scope="scope">
             {{ scope.row.rentEndDay }}
           </template>
         </el-table-column>
-        <el-table-column align="center" width="60px" label="房租金额" prop="rentMoney">
+        <el-table-column align="center" min-width="60%" label="房租金额" prop="rentMoney">
           <template slot-scope="scope">
             {{ scope.row.rentMoney }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="期初电表度数" prop="lastElecNum">
+        <el-table-column align="center" min-width="60%" label="期初电表度数" prop="lastElecNum">
           <template slot-scope="scope">
             {{ scope.row.lastElecNum }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="期末电表度数" prop="curElecNum">
+        <el-table-column align="center" min-width="60%" label="期末电表度数" prop="curElecNum">
           <template slot-scope="scope">
             {{ scope.row.curElecNum }}
           </template>
         </el-table-column>
-        <el-table-column align="center" width="60px" label="电费单价" prop="elecPrice">
+        <el-table-column align="center" min-width="60%" label="电费单价" prop="elecPrice">
           <template slot-scope="scope">
             {{ scope.row.elecPrice }}
           </template>
         </el-table-column>
-        <el-table-column align="center" width="60px" label="电费" prop="elecMoney">
+        <el-table-column align="center" min-width="60%" label="电费" prop="elecMoney">
           <template slot-scope="scope">
             {{ scope.row.elecMoney }}
           </template>
         </el-table-column>
-        <el-table-column align="center" width="50px" label="水费" prop="waterMoney">
+        <el-table-column align="center" min-width="60%"  label="水费" prop="waterMoney">
           <template slot-scope="scope">
             {{ scope.row.waterMoney }}
           </template>
         </el-table-column>
-        <el-table-column align="center" width="50px" label="人数" prop="peopleCount">
+        <el-table-column align="center" min-width="50%"  label="人数" prop="peopleCount">
           <template slot-scope="scope">
             {{ scope.row.peopleCount }}
           </template>
         </el-table-column>
-        <el-table-column align="center" width="50px" label="网费" prop="internetMoney">
+        <el-table-column align="center" min-width="50%"  label="网费" prop="internetMoney">
           <template slot-scope="scope">
             {{ scope.row.internetMoney }}
           </template>
         </el-table-column>
-        <el-table-column align="center" width="50px" label="收款人" prop="signature">
+        <el-table-column align="center" min-width="60%"  label="合计金额" prop="sumMoney">
+          <template slot-scope="scope">
+            {{ scope.row.sumMoney }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" min-width="60%"  label="收款人" prop="signature">
           <template slot-scope="scope">
             {{ scope.row.signature }}
           </template>
         </el-table-column>
-        <el-table-column align="center" width="50px" label="备注" prop="note">
+        <el-table-column align="center" min-width="60%"  label="备注" prop="note">
           <template slot-scope="scope">
             {{ scope.row.note }}
           </template>
