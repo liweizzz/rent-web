@@ -45,7 +45,7 @@ service.interceptors.response.use(
     })
     if (error.response.data.code === 1005) {
       removeToken()
-      location.href = '/login'
+      location.href = '/rent-ui/login'
     }
     return Promise.reject(error)
   }
