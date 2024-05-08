@@ -5,7 +5,7 @@
       <el-button type="primary" icon="el-icon-plus" @click="addReceiptForm">创建收据</el-button>
     </div>
     <div>
-      <el-table :data="receiptList" border height="600px" fit highlight-current-row style="width: 100%">
+      <el-table :data="receiptList" border fit highlight-current-row style="width: 100%">
         <el-table-column type="index" label="序号" align="center" sortable />
         <el-table-column align="center" min-width="60%" label="租户姓名" prop="tenantName">
           <template slot-scope="scope">

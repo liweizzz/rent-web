@@ -5,7 +5,7 @@
       <el-button type="primary" icon="el-icon-plus" @click="addTenantForm">增加</el-button>
     </div>
     <div>
-      <el-table :data="tenantList" border height="600px" fit highlight-current-row style="width:100%;">
+      <el-table :data="tenantList" border fit highlight-current-row style="width:100%;">
         <el-table-column type="index" label="序号" align="center" sortable />
         <el-table-column align="center" width="100px" label="租户姓名" prop="userName">
           <template slot-scope="scope">
