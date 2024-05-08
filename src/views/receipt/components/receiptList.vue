@@ -67,7 +67,7 @@
             {{ scope.row.internetMoney }}
           </template>
         </el-table-column>
-        <el-table-column align="center" min-width="60%"  label="合计金额" prop="sumMoney">
+        <el-table-column align="center" min-width="60%"  label="金额合计" prop="sumMoney">
           <template slot-scope="scope">
             {{ scope.row.sumMoney }}
           </template>
