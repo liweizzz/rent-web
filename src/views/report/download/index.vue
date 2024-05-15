@@ -24,7 +24,9 @@ export default {
   name: 'Report',
   data() {
     return {
-      queryForm: {},
+      queryForm: {
+        month: new Date().toISOString().substr(0, 7) // Set default value to current month
+      },
       apartmentOption: store.getters.apartments
     }
   },
