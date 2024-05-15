@@ -128,7 +128,10 @@ export default {
         delTenant(row.id).then(response => {
           if (response.code === 200) {
             this.handleCurrentChange(1)
-            alert('删除成功')
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
           }
         })
       }).catch(_ => {})

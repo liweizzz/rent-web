@@ -52,32 +52,32 @@
             {{ scope.row.elecMoney }}
           </template>
         </el-table-column>
-        <el-table-column align="center" min-width="60%"  label="水费" prop="waterMoney">
+        <el-table-column align="center" min-width="60%" label="水费" prop="waterMoney">
           <template slot-scope="scope">
             {{ scope.row.waterMoney }}
           </template>
         </el-table-column>
-        <el-table-column align="center" min-width="50%"  label="人数" prop="peopleCount">
+        <el-table-column align="center" min-width="50%" label="人数" prop="peopleCount">
           <template slot-scope="scope">
             {{ scope.row.peopleCount }}
           </template>
         </el-table-column>
-        <el-table-column align="center" min-width="50%"  label="网费" prop="internetMoney">
+        <el-table-column align="center" min-width="50%" label="网费" prop="internetMoney">
           <template slot-scope="scope">
             {{ scope.row.internetMoney }}
           </template>
         </el-table-column>
-        <el-table-column align="center" min-width="60%"  label="金额合计" prop="sumMoney">
+        <el-table-column align="center" min-width="60%" label="金额合计" prop="sumMoney">
           <template slot-scope="scope">
             {{ scope.row.sumMoney }}
           </template>
         </el-table-column>
-        <el-table-column align="center" min-width="60%"  label="收款人" prop="signature">
+        <el-table-column align="center" min-width="60%" label="收款人" prop="signature">
           <template slot-scope="scope">
             {{ scope.row.signature }}
           </template>
         </el-table-column>
-        <el-table-column align="center" min-width="60%"  label="备注" prop="note">
+        <el-table-column align="center" min-width="60%" label="备注" prop="note">
           <template slot-scope="scope">
             {{ scope.row.note }}
           </template>
@@ -180,7 +180,10 @@ export default {
         delReceipt(row.id).then(response => {
           if (response.code === 200) {
             this.handleCurrentChange(1)
-            alert('删除成功')
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
           }
         })
       })

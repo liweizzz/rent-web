@@ -25,7 +25,7 @@ export function getReceipt(id) {
 export function getReceiptImg(id) {
   return request({
     url: '/receipt/getReceiptImg?id=' + id,
-    method: 'get',
+    method: 'get'
   })
 }
 
@@ -41,5 +41,14 @@ export function getLastReceiptByRoom(id) {
   return request({
     url: '/receipt/getLastReceiptByRoom?roomNum=' + id,
     method: 'get'
+  })
+}
+
+export function downloadReport(query) {
+  return request({
+    url: '/report/download',
+    method: 'get',
+    params: query,
+    responseType: 'blob'
   })
 }

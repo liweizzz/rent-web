@@ -5,9 +5,8 @@
       <el-button type="primary" icon="el-icon-plus" @click="addApartmentForm">增加</el-button>
     </div>
     <div>
-      <el-table :data="apartmentList" border fit highlight-current-row style="width: 100%" >
-        <el-table-column type="index" label="序号" align="center" width="50" sortable>
-        </el-table-column>
+      <el-table :data="apartmentList" border fit highlight-current-row style="width: 100%">
+        <el-table-column type="index" label="序号" align="center" width="50" sortable />
         <el-table-column align="center" label="公寓ID" prop="apartmentId">
           <template slot-scope="scope">
             {{ scope.row.apartmentId }}
@@ -25,22 +24,22 @@
         </el-table-column>
         <el-table-column width="400px" align="center" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" icon = "el-icon-plus" size="small" @click="addRoom(scope)">
+            <el-button type="primary" icon="el-icon-plus" size="small" @click="addRoom(scope)">
               {{ $t('permission.addRoom') }}
             </el-button>
-            <el-button type="primary" icon = "el-icon-s-grid" size="small" @click="listRoom(scope)">
+            <el-button type="primary" icon="el-icon-s-grid" size="small" @click="listRoom(scope)">
               {{ $t('permission.listRoom') }}
             </el-button>
-            <el-button type="danger" icon = "el-icon-delete" size="small" @click="handleDelete(scope)">
+            <el-button type="danger" icon="el-icon-delete" size="small" @click="handleDelete(scope)">
               {{ $t('permission.delete') }}
             </el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <addApartment v-if="addApartmentBox"></addApartment>
-    <add-room v-if="addRoomBox" :apartmentId = 'apartmentId' :apartmentName = 'apartmentName'></add-room>
-    <room-list v-if="roomListBox" :apartmentId="apartmentId"></room-list>
+    <addApartment v-if="addApartmentBox" />
+    <add-room v-if="addRoomBox" :apartment-id="apartmentId" :apartment-name="apartmentName" />
+    <room-list v-if="roomListBox" :apartment-id="apartmentId" />
   </div>
 </template>
 
@@ -91,7 +90,10 @@ export default {
         delApartment(row.id).then(response => {
           if (response.code === 200) {
             this.getApartmentList()
-            alert('删除成功')
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
           }
         })
       })

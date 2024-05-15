@@ -25,8 +25,12 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
+    const contentType = response.headers['content-type']
     const res = response.data
-    if (res.code === 200) {
+    if (contentType && contentType.includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
+      // 如果Content-Type为文件流类型，则直接返回响应对象
+      return response
+    } else if (res.code === 200) {
       return res
     } else {
       Message({
@@ -38,6 +42,7 @@ service.interceptors.response.use(
     }
   },
   error => {
+    console.log(error)
     Message({
       message: error.response.data.message,
       type: 'error',
