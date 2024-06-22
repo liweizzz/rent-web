@@ -60,6 +60,14 @@
           </el-button>
         </div>
       </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <div style="text-align: center;">
+        <el-link type="primary" href="https://beian.miit.gov.cn">鄂ICP备2024056869号</el-link>
+      </div>
     </el-form>
 
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog">
@@ -69,6 +77,7 @@
       <br>
       <social-sign />
     </el-dialog>
+
   </div>
 </template>
 
