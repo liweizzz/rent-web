@@ -54,6 +54,16 @@ export default {
           message: '下载成功',
           type: 'success'
         })
+      }).catch(error => {
+        const reader = new FileReader()
+        reader.readAsText(error.response.data, 'utf-8')
+        reader.onload = () => {
+          const errorMsg = JSON.parse(reader.result)
+          this.$message({
+            message: errorMsg.message,
+            type: 'error'
+          })
+        }
       })
     },
     sendReport() {
