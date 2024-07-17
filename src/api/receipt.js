@@ -8,6 +8,14 @@ export function getReceiptList(query) {
   })
 }
 
+export function createRecepitBatch(data) {
+  return request({
+    url: '/receipt/createBatch',
+    method: 'post',
+    data
+  })
+}
+
 export function delReceipt(id) {
   return request({
     url: '/receipt/del?id=' + id,

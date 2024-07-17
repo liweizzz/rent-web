@@ -3,6 +3,7 @@
     <div>
       <el-button type="primary" icon="el-icon-search" @click="searchReceipt">搜索</el-button>
       <el-button type="primary" icon="el-icon-plus" @click="addReceiptForm">创建收据</el-button>
+      <el-button type="primary" icon="el-icon-plus" @click="addReceiptBatch">批量创建收据</el-button>
     </div>
     <div>
       <el-table :data="receiptList" border fit highlight-current-row style="width: 100%">
@@ -111,12 +112,29 @@
         <el-image :src="receiptImage" />
       </el-dialog>
     </div>
+    <div>
+      <el-dialog :visible.sync="batchDialog" width="50%" :show-close="false" :before-close="handleClose">
+        <el-form :model="rooms" label-position="left">
+          <el-row>
+            <el-col v-for="(room) in rooms" :key="room.roomNum" :span="4">
+              <el-form-item :label="room.roomNum">
+                <el-input v-model="room.curElecNum" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+        <div style="text-align:right;">
+          <el-button type="danger" @click="cancel">{{ $t('permission.cancel') }}</el-button>
+          <el-button type="primary" @click="createReceiptBatch">{{ $t('permission.confirm') }}</el-button>
+        </div>
+      </el-dialog>
+    </div>
     <createReceipt v-if="addbox" ref="createReceipt" :apartment-id="apartmentId" />
   </div>
 </template>
 
 <script>
-import { delReceipt, getReceiptImg, getReceiptList } from '@/api/receipt'
+import { createRecepitBatch, delReceipt, getReceiptImg, getReceiptList } from '@/api/receipt'
 import createReceipt from '@/views/receipt/components/createReceipt.vue'
 
 export default {
@@ -131,6 +149,17 @@ export default {
     return {
       receiptList: null,
       dialogVisible: false,
+      batchDialog: false,
+      rooms: [
+        { roomNum: '101', curElecNum: '' }, { roomNum: '102', curElecNum: '' }, { roomNum: '103', curElecNum: '' },
+        { roomNum: '105', curElecNum: '' }, { roomNum: '106', curElecNum: '' }, { roomNum: '107', curElecNum: '' },
+        { roomNum: '201', curElecNum: '' }, { roomNum: '202', curElecNum: '' }, { roomNum: '203', curElecNum: '' },
+        { roomNum: '205', curElecNum: '' }, { roomNum: '206', curElecNum: '' }, { roomNum: '207', curElecNum: '' },
+        { roomNum: '208', curElecNum: '' }, { roomNum: '209', curElecNum: '' }, { roomNum: '301', curElecNum: '' },
+        { roomNum: '302', curElecNum: '' }, { roomNum: '303', curElecNum: '' }, { roomNum: '305', curElecNum: '' },
+        { roomNum: '306', curElecNum: '' }, { roomNum: '307', curElecNum: '' }, { roomNum: '308', curElecNum: '' },
+        { roomNum: '309', curElecNum: '' }, { roomNum: '310', curElecNum: '' }, { roomNum: '311', curElecNum: '' }
+      ],
       receiptImage: null,
       addbox: false,
       queryParam: {
@@ -146,6 +175,9 @@ export default {
   methods: {
     addReceiptForm() {
       this.addbox = true
+    },
+    addReceiptBatch() {
+      this.batchDialog = true
     },
     editReceipt({ row }) {
       this.addbox = true
@@ -195,6 +227,27 @@ export default {
           this.dialogVisible = true
         }
       })
+    },
+    createReceiptBatch() {
+      createRecepitBatch(this.rooms).then(response => {
+        if (response.code === 200) {
+          this.$message({
+            message: '批量生成收据完成',
+            type: 'success'
+          })
+          this.batchDialog = false
+          this.getReceiptList()
+        }
+      })
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？', { type: 'warning' }).then(_ => {
+        done()
+        this.batchDialog = false
+      }).catch(_ => {})
+    },
+    cancel() {
+      this.batchDialog = false
     }
   }
 }
