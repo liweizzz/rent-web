@@ -4,20 +4,28 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="房间号" prop="roomNum">
-            <el-select placeholder="请选择" @change="roomChange" v-model="receiptForm.roomNum">
+            <el-select v-model="receiptForm.roomNum" placeholder="请选择" @change="roomChange">
               <el-option
                 v-for="item in roomOption"
                 :key="item.tenantId"
                 :label="item.roomNum"
-                :value="item.roomNum"></el-option>
+                :value="item.roomNum"
+              />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="租户姓名" prop="tenantName">
-            <el-input v-model="receiptForm.tenantName"></el-input>
+            <el-input v-model="receiptForm.tenantName" />
           </el-form-item>
         </el-col>
+        <el-col :span="8">
+          <el-form-item label="房租金额" prop="rentMoney">
+            <el-input v-model="receiptForm.rentMoney" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="8">
           <el-form-item label="房租起始日期" prop="rentStartDay">
             <el-date-picker
@@ -25,12 +33,10 @@
               type="date"
               placeholder="选择日期"
               :picker-options="pickerOptions"
-              value-format="yyyy-MM-dd">
-            </el-date-picker>
+              value-format="yyyy-MM-dd"
+            />
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row>
         <el-col :span="8">
           <el-form-item label="房租到期日期" prop="rentEndDay">
             <el-date-picker
@@ -38,88 +44,92 @@
               type="date"
               placeholder="选择日期"
               :picker-options="pickerOptions"
-              value-format="yyyy-MM-dd">
-            </el-date-picker>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="房租金额" prop="rentMoney">
-            <el-input v-model="receiptForm.rentMoney"></el-input>
+              value-format="yyyy-MM-dd"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="水费单价" prop="waterMoney">
-            <el-select placeholder="请选择" v-model="receiptForm.waterMoney">
+            <el-select v-model="receiptForm.waterMoney" placeholder="请选择">
               <el-option
                 v-for="item in waterMoney"
                 :key="item.key"
                 :label="item.value"
-                :value="item.value"></el-option>
+                :value="item.value"
+              />
             </el-select>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="8">
-          <el-form-item label="人数" prop="peopleCount">
-            <el-input v-model="receiptForm.peopleCount"></el-input>
+          <el-form-item label="计费人数" prop="peopleCount">
+            <el-input v-model="receiptForm.peopleCount" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="期初电表度数" prop="lastElecNum">
-            <el-input v-model="receiptForm.lastElecNum"></el-input>
+            <el-input v-model="receiptForm.lastElecNum" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="期末电表度数" prop="curElecNum">
-            <el-input v-model="receiptForm.curElecNum"></el-input>
+            <el-input v-model="receiptForm.curElecNum" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="8">
           <el-form-item label="电费单价" prop="elecPrice">
-            <el-select placeholder="请选择" v-model="receiptForm.elecPrice">
+            <el-select v-model="receiptForm.elecPrice" placeholder="请选择">
               <el-option
                 v-for="item in elecPriceOptions"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value"></el-option>
+                :value="item.value"
+              />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="网费" prop="internetMoney">
-            <el-select placeholder="请选择" v-model="receiptForm.internetMoney">
+            <el-select v-model="receiptForm.internetMoney" placeholder="请选择">
               <el-option
                 v-for="item in internetMoney"
                 :key="item.key"
                 :label="item.value"
-                :value="item.value"></el-option>
+                :value="item.value"
+              />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="押金" prop="deposit">
-            <el-input v-model="receiptForm.deposit"></el-input>
+            <el-input v-model="receiptForm.deposit" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="8">
+          <el-form-item label="居住人数" prop="allPeopleCount">
+            <el-input v-model="receiptForm.allPeopleCount" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
           <el-form-item label="收款人" prop="signature">
-            <el-select placeholder="请选择" v-model="receiptForm.signature">
+            <el-select v-model="receiptForm.signature" placeholder="请选择">
               <el-option
                 v-for="item in signature"
                 :key="item.key"
                 :label="item.value"
-                :value="item.value"></el-option>
+                :value="item.value"
+              />
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="16">
+        <el-col :span="8">
           <el-form-item label="备注" prop="note">
-            <el-input v-model="receiptForm.note"></el-input>
+            <el-input v-model="receiptForm.note" />
           </el-form-item>
         </el-col>
       </el-row>

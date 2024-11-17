@@ -58,7 +58,7 @@
             {{ scope.row.waterMoney }}
           </template>
         </el-table-column>
-        <el-table-column align="center" min-width="50%" label="人数" prop="peopleCount">
+        <el-table-column align="center" min-width="50%" label="计费人数" prop="peopleCount">
           <template slot-scope="scope">
             {{ scope.row.peopleCount }}
           </template>
@@ -113,7 +113,7 @@
       </el-dialog>
     </div>
     <div>
-      <el-dialog :visible.sync="batchDialog" width="50%" :show-close="false" :before-close="handleClose">
+      <el-dialog :visible.sync="batchDialog" title="房间号" width="50%" :show-close="false" :before-close="handleClose">
         <el-form :model="rooms" label-position="left">
           <el-row>
             <el-col v-for="(room) in rooms" :key="room.roomNum" :span="4">
